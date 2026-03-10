@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finio — App Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080C14;
+    --card: #111827;
+    --card2: #1A2235;
+    --green: #22C55E;
+    --green-soft: #16A34A;
+    --green-glow: rgba(34,197,94,0.15);
+    --amber: #F59E0B;
+    --red: #EF4444;
+    --text: #F0F4FF;
+    --muted: #6B7280;
+    --border: rgba(255,255,255,0.07);
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    font-family: var(--font-body);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  /* Page header */
+  .page-header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeDown 0.6s ease;
+  }
+  .page-header .brand {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .page-header h1 {
+    font-family: var(--font-head);
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #F0F4FF 0%, #6B7280 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .page-header p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  /* Screen tabs */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeDown 0.7s ease;
+  }
+  .tab-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .tab-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+  .tab-btn.active {
+    background: var(--green);
+    color: #000;
+    border-color: var(--green);
+    font-weight: 600;
+  }
+
+  /* Phone mockup */
+  .phone-wrap {
+    animation: fadeUp 0.6s ease;
+    position: relative;
+  }
+  .phone-frame {
+    width: 375px;
+    height: 812px;
+    background: #0A0E1A;
+    border-radius: 50px;
+    border: 2px solid rgba(255,255,255,0.12);
+    box-shadow:
+      0 0 0 8px #111827,
+      0 0 0 10px rgba(255,255,255,0.05),
+      0 60px 120px rgba(0,0,0,0.8),
+      inset 0 0 60px rgba(34,197,94,0.03);
+    overflow: hidden;
+    position: relative;
+  }
+  .phone-notch {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 30px;
+    background: #080C14;
+    border-radius: 20px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .notch-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #1A2235;
+  }
+  .notch-pill {
+    width: 40px; height: 6px;
+    border-radius: 3px;
+    background: #1A2235;
+  }
+
+  .screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 80px;
+    scrollbar-width: none;
+  }
+  .screen::-webkit-scrollbar { display: none; }
+  .screen.active { display: block; }
+
+  /* STATUS BAR */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 52px 24px 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .status-icons { display: flex; gap: 4px; align-items: center; }
+  .status-icons span { font-size: 11px; }
+
+  /* ========================
+     SCREEN 1: ONBOARDING
+  ======================== */
+  .onboard-screen {
+    background: linear-gradient(180deg, #0D1525 0%, #080C14 100%);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 60px 28px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .onboard-bg-glow {
+    position: absolute;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%);
+    top: -50px; left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .onboard-logo {
+    font-family: var(--font-head);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--green);
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+  .onboard-tagline {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 48px;
+  }
+  .onboard-illustration {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .onboard-card-preview {
+    background: linear-gradient(135deg, #1A2235, #0F1729);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+  .card-chip { width: 32px; height: 24px; background: var(--amber); border-radius: 6px; margin-bottom: 16px; opacity: 0.8; }
+  .card-balance { font-family: var(--font-head); font-size: 26px; font-weight: 700; }
+  .card-label { font-size: 11px; color: var(--muted); }
+  .mini-stats { display: flex; gap: 8px; margin-top: 12px; }
+  .mini-stat {
+    flex: 1;
+    background: var(--card2);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 11px;
+  }
+  .mini-stat-val { font-weight: 700; font-size: 14px; }
+  .mini-stat-val.green { color: var(--green); }
+  .mini-stat-val.red { color: var(--red); }
+  .onboard-title {
+    font-family: var(--font-head);
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .onboard-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 32px; }
+  .dots { display: flex; gap: 6px; margin-bottom: 32px; }
+  .dot { width: 8px; height: 8px; border-radius: 4px; background: var(--border); transition: all 0.3s; }
+  .dot.active { width: 24px; background: var(--green); }
+  .btn-primary {
+    width: 100%;
+    background: var(--green);
+    color: #000;
+    border: none;
+    border-radius: 16px;
+    padding: 16px;
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .btn-primary:hover { background: #16A34A; transform: translateY(-1px); }
+  .btn-ghost {
+    width: 100%;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+  }
+
+  /* ========================
+     SCREEN 2: HOME DASHBOARD
+  ======================== */
+  .home-screen {
+    background: var(--bg);
+    min-height: 100%;
+  }
+  .home-header {
+    padding: 52px 24px 20px;
+    background: linear-gradient(180deg, #0D1525 0%, var(--bg) 100%);
+  }
+  .home-greeting {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .greeting-text .hi { font-size: 13px; color: var(--muted); }
+  .greeting-text .name { font-family: var(--font-head); font-size: 22px; font-weight: 700; }
+  .avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--green), #16A34A);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: #000; font-size: 16px;
+  }
+
+  /* Balance card */
+  .balance-card {
+    background: linear-gradient(135deg, #112210 0%, #0A1A10 100%);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 24px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .balance-card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 150px; height: 150px;
+    background: radial-gradient(circle, rgba(34,197,94,0.12) 0%, transparent 70%);
+  }
+  .balance-label { font-size: 12px; color: rgba(34,197,94,0.7); font-weight: 500; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
+  .balance-amount { font-family: var(--font-head); font-size: 38px; font-weight: 800; letter-spacing: -1px; }
+  .balance-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(34,197,94,0.1);
+    color: var(--green);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+  .balance-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .balance-sub {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 12px;
+  }
+  .balance-sub-label { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+  .balance-sub-val { font-family: var(--font-head); font-size: 16px; font-weight: 700; margin-top: 4px; }
+  .inc { color: var(--green); }
+  .exp { color: var(--red); }
+
+  /* AI insight strip */
+  .ai-insight {
+    margin: 16px 24px;
+    background: linear-gradient(135deg, #1A1500, #120F00);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .ai-icon {
+    width: 32px; height: 32px;
+    background: rgba(245,158,11,0.15);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .ai-text { font-size: 12px; line-height: 1.5; }
+  .ai-text strong { color: var(--amber); font-weight: 600; }
+  .ai-text span { color: var(--muted); }
+
+  /* Quick actions */
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px 12px;
+  }
+  .section-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; }
+  .section-link { font-size: 12px; color: var(--green); font-weight: 500; }
+
+  .quick-actions {
+    display: flex;
+    gap: 12px;
+    padding: 0 24px 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .quick-actions::-webkit-scrollbar { display: none; }
+  .qa-btn {
+    flex-shrink: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 76px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .qa-btn:hover { border-color: var(--green); background: var(--green-glow); }
+  .qa-icon { font-size: 22px; }
+  .qa-label { font-size: 10px; color: var(--muted); text-align: center; font-weight: 500; }
+
+  /* Budget rings */
+  .budget-section { padding: 0 24px; }
+  .budget-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+  }
+  .budget-ring-row {
+    display: flex;
+    gap: 16px;
+    justify-content: space-around;
+    margin: 16px 0;
+  }
+  .ring-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .ring-wrap { position: relative; width: 72px; height: 72px; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .ring-label { font-size: 10px; color: var(--muted); text-align: center; }
+
+  /* Transactions */
+  .tx-list { padding: 0 24px; }
+  .tx-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tx-item:last-child { border-bottom: none; }
+  .tx-icon {
+    width: 42px; height: 42px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .tx-info { flex: 1; }
+  .tx-name { font-weight: 500; font-size: 14px; }
+  .tx-cat { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .tx-amount { font-family: var(--font-head); font-weight: 700; font-size: 15px; }
+  .tx-date { font-size: 10px; color: var(--muted); margin-top: 2px; text-align: right; }
+
+  /* ========================
+     SCREEN 3: TRANSACTIONS
+  ======================== */
+  .txn-screen { background: var(--bg); min-height: 100%; }
+  .txn-header {
+    padding: 52px 24px 16px;
+    background: linear-gradient(180deg, #0D1525 0%, var(--bg) 100%);
+  }
+  .back-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+  .back-row span { color: var(--muted); font-size: 13px; }
+  .page-title { font-family: var(--font-head); font-size: 24px; font-weight: 800; }
+  .search-bar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .filter-chips {
+    display: flex;
+    gap: 8px;
+    padding: 12px 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .chip {
+    flex-shrink: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chip.active { background: var(--green-glow); border-color: var(--green); color: var(--green); }
+  .tx-group { padding: 0 24px; margin-bottom: 8px; }
+  .tx-group-date { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 12px 0 4px; }
+
+  /* ========================
+     SCREEN 4: BUDGET PLANNER
+  ======================== */
+  .budget-screen { background: var(--bg); min-height: 100%; }
+  .budget-header { padding: 52px 24px 20px; background: linear-gradient(180deg, #0D1525 0%, var(--bg) 100%); }
+  .month-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-top: 16px;
+  }
+  .month-name { font-family: var(--font-head); font-weight: 700; }
+  .month-arrow { color: var(--muted); font-size: 18px; cursor: pointer; }
+  .budget-overview {
+    margin: 0 24px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+  }
+  .budget-total-label { font-size: 12px; color: var(--muted); }
+  .budget-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 8px 0 16px;
+  }
+  .budget-total-spent { font-family: var(--font-head); font-size: 28px; font-weight: 800; }
+  .budget-total-limit { font-size: 14px; color: var(--muted); }
+  .master-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .master-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--green), #16A34A);
+    width: 62%;
+    position: relative;
+  }
+  .budget-percent { font-size: 12px; color: var(--green); font-weight: 600; }
+  .rule-toggle {
+    display: flex;
+    gap: 8px;
+    margin: 0 24px 16px;
+  }
+  .rule-btn {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .rule-btn.active { background: var(--green-glow); border-color: var(--green); color: var(--green); }
+  .cat-budgets { padding: 0 24px; }
+  .cat-budget-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .cat-budget-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .cat-budget-left { display: flex; align-items: center; gap: 10px; }
+  .cat-ico { font-size: 20px; }
+  .cat-name { font-weight: 600; font-size: 14px; }
+  .cat-sub { font-size: 11px; color: var(--muted); }
+  .cat-amounts { text-align: right; }
+  .cat-spent { font-family: var(--font-head); font-weight: 700; font-size: 15px; }
+  .cat-limit { font-size: 11px; color: var(--muted); }
+  .cat-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+  .cat-fill { height: 100%; border-radius: 3px; }
+
+  /* ========================
+     SCREEN 5: GOALS
+  ======================== */
+  .goals-screen { background: var(--bg); min-height: 100%; }
+  .goals-header { padding: 52px 24px 20px; background: linear-gradient(180deg, #0D1525 0%, var(--bg) 100%); }
+  .add-goal-btn {
+    background: var(--green-glow);
+    border: 1px dashed rgba(34,197,94,0.4);
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--green);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 24px 16px;
+  }
+  .goal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 0 24px 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .goal-emoji { font-size: 32px; margin-bottom: 12px; }
+  .goal-name { font-family: var(--font-head); font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .goal-meta { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .goal-progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
+  }
+  .goal-saved { font-family: var(--font-head); font-size: 22px; font-weight: 800; }
+  .goal-target { font-size: 13px; color: var(--muted); }
+  .goal-bar { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
+  .goal-fill { height: 100%; border-radius: 4px; }
+  .goal-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(34,197,94,0.1);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--green);
+  }
+  .milestone-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .milestone {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.06);
+  }
+  .milestone.done { background: var(--green); }
+
+  /* ========================
+     SCREEN 6: AI CHAT
+  ======================== */
+  .chat-screen { background: var(--bg); min-height: 100%; display: flex; flex-direction: column; }
+  .chat-header {
+    padding: 52px 24px 16px;
+    background: linear-gradient(180deg, #0D1525 0%, var(--bg) 100%);
+  }
+  .ai-title-row { display: flex; align-items: center; gap: 12px; }
+  .ai-avatar {
+    width: 42px; height: 42px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(34,197,94,0.3), rgba(16,163,74,0.1));
+    border: 1px solid rgba(34,197,94,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .ai-name { font-family: var(--font-head); font-size: 18px; font-weight: 700; }
+  .ai-status { font-size: 11px; color: var(--green); display: flex; align-items: center; gap: 4px; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+  .chat-messages { flex: 1; padding: 16px 24px; display: flex; flex-direction: column; gap: 14px; }
+  .msg-ai {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    max-width: 90%;
+  }
+  .msg-ai-bubble {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px 18px 18px 18px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .msg-user {
+    align-self: flex-end;
+    max-width: 75%;
+  }
+  .msg-user-bubble {
+    background: var(--green);
+    color: #000;
+    border-radius: 18px 18px 4px 18px;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.55;
+  }
+  .insight-card {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .insight-row { display: flex; justify-content: space-between; padding: 4px 0; }
+  .insight-row .label { color: var(--muted); }
+  .insight-row .val { font-weight: 600; }
+  .prompts-row { display: flex; gap: 8px; padding: 0 24px 12px; overflow-x: auto; scrollbar-width: none; }
+  .prompts-row::-webkit-scrollbar { display: none; }
+  .prompt-chip {
+    flex-shrink: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .prompt-chip:hover { border-color: var(--green); color: var(--green); }
+  .chat-input-row {
+    display: flex;
+    gap: 10px;
+    padding: 12px 24px;
+    background: linear-gradient(0deg, var(--bg) 70%, transparent 100%);
+  }
+  .chat-input {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+  }
+  .chat-send {
+    width: 44px; height: 44px;
+    background: var(--green);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* ========================
+     SCREEN 7: PROFILE
+  ======================== */
+  .profile-screen { background: var(--bg); min-height: 100%; }
+  .profile-header {
+    padding: 52px 24px 24px;
+    background: linear-gradient(180deg, #0D1525 0%, var(--bg) 100%);
+    text-align: center;
+  }
+  .profile-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--green), #16A34A);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-head);
+    font-size: 32px;
+    font-weight: 700;
+    color: #000;
+    margin: 0 auto 16px;
+    border: 3px solid rgba(34,197,94,0.3);
+  }
+  .profile-name { font-family: var(--font-head); font-size: 22px; font-weight: 800; }
+  .profile-email { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .profile-badges { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+  .badge {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .badge.green { color: var(--green); border-color: rgba(34,197,94,0.3); }
+  .settings-section { padding: 0 24px; margin-bottom: 8px; }
+  .settings-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; padding: 16px 0 8px; }
+  .settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .settings-item:hover { border-color: rgba(255,255,255,0.12); }
+  .settings-item-left { display: flex; align-items: center; gap: 12px; }
+  .settings-icon { font-size: 18px; }
+  .settings-text { font-size: 14px; font-weight: 500; }
+  .settings-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .toggle {
+    width: 40px; height: 22px;
+    border-radius: 11px;
+    background: var(--green);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px; right: 3px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .toggle.off { background: rgba(255,255,255,0.15); }
+  .toggle.off::after { right: auto; left: 3px; }
+  .settings-arrow { color: var(--muted); font-size: 14px; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(8,12,20,0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 10px 0 24px;
+    z-index: 50;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 6px 0;
+    transition: all 0.2s;
+  }
+  .nav-icon { font-size: 22px; opacity: 0.4; }
+  .nav-label { font-size: 9px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+  .nav-item.active .nav-icon { opacity: 1; }
+  .nav-item.active .nav-label { color: var(--green); }
+  .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); margin-top: 2px; opacity: 0; }
+  .nav-item.active .nav-dot { opacity: 1; }
+
+  /* Animations */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 0; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="brand">Finio — UI/UX Case Study</div>
+  <h1>Interactive Prototype</h1>
+  <p>Click the screens below to explore each section of the app</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showScreen('onboard',this)">① Onboarding</button>
+  <button class="tab-btn" onclick="showScreen('home',this)">② Dashboard</button>
+  <button class="tab-btn" onclick="showScreen('txn',this)">③ Transactions</button>
+  <button class="tab-btn" onclick="showScreen('budget',this)">④ Budget</button>
+  <button class="tab-btn" onclick="showScreen('goals',this)">⑤ Goals</button>
+  <button class="tab-btn" onclick="showScreen('chat',this)">⑥ AI Assistant</button>
+  <button class="tab-btn" onclick="showScreen('profile',this)">⑦ Profile</button>
+</div>
+
+<div class="phone-wrap">
+  <div class="phone-frame">
+    <div class="phone-notch">
+      <div class="notch-dot"></div>
+      <div class="notch-pill"></div>
+      <div class="notch-dot"></div>
+    </div>
+
+    <!-- SCREEN 1: ONBOARDING -->
+    <div class="screen active" id="screen-onboard">
+      <div class="onboard-screen">
+        <div class="onboard-bg-glow"></div>
+        <div class="onboard-logo">finio</div>
+        <div class="onboard-tagline">Your money, finally intelligent</div>
+        <div class="onboard-illustration">
+          <div class="onboard-card-preview">
+            <div class="card-chip"></div>
+            <div class="card-label">Total Balance</div>
+            <div class="card-balance">₹84,320</div>
+          </div>
+          <div class="mini-stats">
+            <div class="mini-stat">
+              <div class="mini-stat-val green">₹62,000</div>
+              <div style="font-size:10px;color:var(--muted)">Income</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-val red">₹31,420</div>
+              <div style="font-size:10px;color:var(--muted)">Spent</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-val" style="color:var(--amber)">₹15,000</div>
+              <div style="font-size:10px;color:var(--muted)">Saved</div>
+            </div>
+          </div>
+        </div>
+        <div class="onboard-title">Know where every rupee goes</div>
+        <div class="onboard-desc">AI-powered insights that actually explain your spending — not just track it.</div>
+        <div class="dots">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <button class="btn-primary">Get Started — It's Free</button>
+        <button class="btn-ghost">I already have an account</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: HOME -->
+    <div class="screen" id="screen-home">
+      <div class="home-screen">
+        <div class="home-header">
+          <div class="home-greeting">
+            <div class="greeting-text">
+              <div class="hi">Good morning ☀️</div>
+              <div class="name">Arpan Narula</div>
+            </div>
+            <div class="avatar">A</div>
+          </div>
+          <div class="balance-card">
+            <div class="balance-label">💳 Total Balance</div>
+            <div class="balance-amount">₹84,320</div>
+            <div class="balance-change">▲ 12.4% from last month</div>
+            <div class="balance-row">
+              <div class="balance-sub">
+                <div class="balance-sub-label">↑ Income</div>
+                <div class="balance-sub-val inc">₹62,000</div>
+              </div>
+              <div class="balance-sub">
+                <div class="balance-sub-label">↓ Expenses</div>
+                <div class="balance-sub-val exp">₹31,420</div>
+              </div>
+              <div class="balance-sub">
+                <div class="balance-sub-label">🎯 Savings</div>
+                <div class="balance-sub-val">₹15,000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-insight">
+          <div class="ai-icon">✨</div>
+          <div class="ai-text">
+            <strong>Finio AI says:</strong><br>
+            <span>You spent 38% more on food this week than your monthly average. Cutting ₹2,000 saves ₹24k/year.</span>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title">Quick Actions</div>
+        </div>
+        <div class="quick-actions">
+          <div class="qa-btn">
+            <div class="qa-icon">➕</div>
+            <div class="qa-label">Add Expense</div>
+          </div>
+          <div class="qa-btn">
+            <div class="qa-icon">📊</div>
+            <div class="qa-label">Analytics</div>
+          </div>
+          <div class="qa-btn">
+            <div class="qa-icon">🎯</div>
+            <div class="qa-label">Goals</div>
+          </div>
+          <div class="qa-btn">
+            <div class="qa-icon">💳</div>
+            <div class="qa-label">Accounts</div>
+          </div>
+          <div class="qa-btn">
+            <div class="qa-icon">📤</div>
+            <div class="qa-label">Export</div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title">Budget Status</div>
+          <div class="section-link">See all →</div>
+        </div>
+        <div class="budget-section">
+          <div class="budget-card">
+            <div style="font-size:12px;color:var(--muted);">March 2026 · 11 days left</div>
+            <div class="budget-ring-row">
+              <div class="ring-item">
+                <div class="ring-wrap">
+                  <svg viewBox="0 0 72 72" width="72" height="72">
+                    <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+                    <circle cx="36" cy="36" r="30" fill="none" stroke="#22C55E" stroke-width="8" stroke-dasharray="188.4" stroke-dashoffset="75" stroke-linecap="round"/>
+                  </svg>
+                  <div class="ring-center" style="color:var(--green)">60%<br><span style="font-size:9px;font-weight:400;color:var(--muted)">Food</span></div>
+                </div>
+                <div class="ring-label">₹6k / ₹10k</div>
+              </div>
+              <div class="ring-item">
+                <div class="ring-wrap">
+                  <svg viewBox="0 0 72 72" width="72" height="72">
+                    <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+                    <circle cx="36" cy="36" r="30" fill="none" stroke="#F59E0B" stroke-width="8" stroke-dasharray="188.4" stroke-dashoffset="47" stroke-linecap="round"/>
+                  </svg>
+                  <div class="ring-center" style="color:var(--amber)">75%<br><span style="font-size:9px;font-weight:400;color:var(--muted)">Travel</span></div>
+                </div>
+                <div class="ring-label">₹3k / ₹4k</div>
+              </div>
+              <div class="ring-item">
+                <div class="ring-wrap">
+                  <svg viewBox="0 0 72 72" width="72" height="72">
+                    <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+                    <circle cx="36" cy="36" r="30" fill="none" stroke="#EF4444" stroke-width="8" stroke-dasharray="188.4" stroke-dashoffset="19" stroke-linecap="round"/>
+                  </svg>
+                  <div class="ring-center" style="color:var(--red)">90%<br><span style="font-size:9px;font-weight:400;color:var(--muted)">Fun</span></div>
+                </div>
+                <div class="ring-label">₹2.7k / ₹3k</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title">Recent Transactions</div>
+          <div class="section-link">See all →</div>
+        </div>
+        <div class="tx-list">
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(239,68,68,0.12)">🍔</div>
+            <div class="tx-info"><div class="tx-name">Swiggy</div><div class="tx-cat">Food & Dining</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--red)">−₹420</div><div class="tx-date">Today</div></div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(34,197,94,0.12)">💼</div>
+            <div class="tx-info"><div class="tx-name">Salary Credit</div><div class="tx-cat">Income</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--green)">+₹62,000</div><div class="tx-date">Mar 1</div></div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(245,158,11,0.12)">🚇</div>
+            <div class="tx-info"><div class="tx-name">Metro Card</div><div class="tx-cat">Transport</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--red)">−₹500</div><div class="tx-date">Mar 9</div></div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(139,92,246,0.12)">🎬</div>
+            <div class="tx-info"><div class="tx-name">Netflix</div><div class="tx-cat">Entertainment</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--red)">−₹649</div><div class="tx-date">Mar 8</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item active"><div class="nav-icon">🏠</div><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">📋</div><div class="nav-label">Txns</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">📊</div><div class="nav-label">Budget</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-label">Goals</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">✨</div><div class="nav-label">AI</div><div class="nav-dot"></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: TRANSACTIONS -->
+    <div class="screen" id="screen-txn">
+      <div class="txn-screen">
+        <div class="txn-header">
+          <div class="back-row"><span>← Back</span></div>
+          <div class="page-title">Transactions</div>
+          <div class="search-bar">🔍 <span>Search transactions...</span></div>
+        </div>
+        <div class="filter-chips">
+          <div class="chip active">All</div>
+          <div class="chip">Food 🍔</div>
+          <div class="chip">Transport 🚇</div>
+          <div class="chip">Shopping 🛍️</div>
+          <div class="chip">Bills 📱</div>
+          <div class="chip">Entertainment 🎬</div>
+        </div>
+        <div class="tx-group">
+          <div class="tx-group-date">Today — Mar 11</div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(239,68,68,0.12)">🍔</div>
+            <div class="tx-info"><div class="tx-name">Swiggy — Biryani</div><div class="tx-cat">Food & Dining · 2:34 PM</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--red)">−₹420</div></div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(34,197,94,0.12)">☕</div>
+            <div class="tx-info"><div class="tx-name">Blue Tokai Coffee</div><div class="tx-cat">Food & Dining · 9:12 AM</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--red)">−₹280</div></div>
+          </div>
+        </div>
+        <div class="tx-group">
+          <div class="tx-group-date">Yesterday — Mar 10</div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(245,158,11,0.12)">🚕</div>
+            <div class="tx-info"><div class="tx-name">Ola Ride</div><div class="tx-cat">Transport · 8:20 PM</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--red)">−₹234</div></div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(59,130,246,0.12)">🛍️</div>
+            <div class="tx-info"><div class="tx-name">Amazon Purchase</div><div class="tx-cat">Shopping · 3:45 PM</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--red)">−₹1,899</div></div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(34,197,94,0.12)">💸</div>
+            <div class="tx-info"><div class="tx-name">Freelance Payment</div><div class="tx-cat">Income · 11:00 AM</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--green)">+₹8,000</div></div>
+          </div>
+        </div>
+        <div class="tx-group">
+          <div class="tx-group-date">Mar 9</div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(139,92,246,0.12)">🎬</div>
+            <div class="tx-info"><div class="tx-name">Netflix Subscription</div><div class="tx-cat">Entertainment · Auto-debit</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--red)">−₹649</div></div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(245,158,11,0.12)">🚇</div>
+            <div class="tx-info"><div class="tx-name">Metro Card Recharge</div><div class="tx-cat">Transport · 8:00 AM</div></div>
+            <div style="text-align:right"><div class="tx-amount" style="color:var(--red)">−₹500</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+        <div class="nav-item active"><div class="nav-icon">📋</div><div class="nav-label">Txns</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">📊</div><div class="nav-label">Budget</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-label">Goals</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">✨</div><div class="nav-label">AI</div><div class="nav-dot"></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: BUDGET -->
+    <div class="screen" id="screen-budget">
+      <div class="budget-screen">
+        <div class="budget-header">
+          <div class="page-title">Budget Planner</div>
+          <div class="month-selector">
+            <div class="month-arrow">‹</div>
+            <div class="month-name">March 2026</div>
+            <div class="month-arrow">›</div>
+          </div>
+        </div>
+        <div class="budget-overview">
+          <div class="budget-total-label">Total Spent This Month</div>
+          <div class="budget-total-row">
+            <div class="budget-total-spent">₹31,420</div>
+            <div class="budget-total-limit">of ₹50,000</div>
+          </div>
+          <div class="master-bar"><div class="master-fill"></div></div>
+          <div class="budget-percent">62% of budget used · ₹18,580 remaining</div>
+        </div>
+        <div class="rule-toggle">
+          <div class="rule-btn active">Default</div>
+          <div class="rule-btn">50/30/20 Rule</div>
+          <div class="rule-btn">Custom Split</div>
+        </div>
+        <div class="cat-budgets">
+          <div class="cat-budget-item">
+            <div class="cat-budget-top">
+              <div class="cat-budget-left"><div class="cat-ico">🍔</div><div><div class="cat-name">Food & Dining</div><div class="cat-sub">6 transactions</div></div></div>
+              <div class="cat-amounts"><div class="cat-spent">₹6,200</div><div class="cat-limit">of ₹10,000</div></div>
+            </div>
+            <div class="cat-bar"><div class="cat-fill" style="width:62%;background:var(--green)"></div></div>
+          </div>
+          <div class="cat-budget-item">
+            <div class="cat-budget-top">
+              <div class="cat-budget-left"><div class="cat-ico">🚕</div><div><div class="cat-name">Transport</div><div class="cat-sub">8 transactions</div></div></div>
+              <div class="cat-amounts"><div class="cat-spent">₹3,100</div><div class="cat-limit">of ₹4,000</div></div>
+            </div>
+            <div class="cat-bar"><div class="cat-fill" style="width:77%;background:var(--amber)"></div></div>
+          </div>
+          <div class="cat-budget-item" style="border-color:rgba(239,68,68,0.3)">
+            <div class="cat-budget-top">
+              <div class="cat-budget-left"><div class="cat-ico">🎬</div><div><div class="cat-name">Entertainment</div><div class="cat-sub">3 transactions · ⚠️ Near limit</div></div></div>
+              <div class="cat-amounts"><div class="cat-spent" style="color:var(--red)">₹2,720</div><div class="cat-limit">of ₹3,000</div></div>
+            </div>
+            <div class="cat-bar"><div class="cat-fill" style="width:91%;background:var(--red)"></div></div>
+          </div>
+          <div class="cat-budget-item">
+            <div class="cat-budget-top">
+              <div class="cat-budget-left"><div class="cat-ico">🛍️</div><div><div class="cat-name">Shopping</div><div class="cat-sub">4 transactions</div></div></div>
+              <div class="cat-amounts"><div class="cat-spent">₹8,400</div><div class="cat-limit">of ₹15,000</div></div>
+            </div>
+            <div class="cat-bar"><div class="cat-fill" style="width:56%;background:var(--green)"></div></div>
+          </div>
+          <div class="cat-budget-item">
+            <div class="cat-budget-top">
+              <div class="cat-budget-left"><div class="cat-ico">📱</div><div><div class="cat-name">Bills & Subscriptions</div><div class="cat-sub">5 transactions</div></div></div>
+              <div class="cat-amounts"><div class="cat-spent">₹4,200</div><div class="cat-limit">of ₹6,000</div></div>
+            </div>
+            <div class="cat-bar"><div class="cat-fill" style="width:70%;background:var(--green))"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">📋</div><div class="nav-label">Txns</div><div class="nav-dot"></div></div>
+        <div class="nav-item active"><div class="nav-icon">📊</div><div class="nav-label">Budget</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-label">Goals</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">✨</div><div class="nav-label">AI</div><div class="nav-dot"></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: GOALS -->
+    <div class="screen" id="screen-goals">
+      <div class="goals-screen">
+        <div class="goals-header">
+          <div class="page-title">Savings Goals</div>
+          <div style="color:var(--muted);font-size:13px;margin-top:4px">3 active goals · ₹38,500 saved total</div>
+        </div>
+        <div class="add-goal-btn">＋ Add New Goal</div>
+        <div class="goal-card" style="background:linear-gradient(135deg,#0D1F15,#0A1510);border-color:rgba(34,197,94,0.2)">
+          <div class="goal-emoji">✈️</div>
+          <div class="goal-name">Goa Trip</div>
+          <div class="goal-meta">Target: June 2026 · Monthly saving: ₹3,000</div>
+          <div class="goal-progress-row">
+            <div class="goal-saved" style="color:var(--green)">₹18,500</div>
+            <div class="goal-target">of ₹30,000</div>
+          </div>
+          <div class="goal-bar"><div class="goal-fill" style="width:62%;background:var(--green)"></div></div>
+          <div class="goal-tag">🔥 On track — 4 months left</div>
+          <div class="milestone-row">
+            <div class="milestone done"></div>
+            <div class="milestone done"></div>
+            <div class="milestone done"></div>
+            <div class="milestone"></div>
+            <div class="milestone"></div>
+          </div>
+        </div>
+        <div class="goal-card">
+          <div class="goal-emoji">🚨</div>
+          <div class="goal-name">Emergency Fund</div>
+          <div class="goal-meta">Target: Dec 2026 · Monthly saving: ₹5,000</div>
+          <div class="goal-progress-row">
+            <div class="goal-saved" style="color:var(--amber)">₹15,000</div>
+            <div class="goal-target">of ₹60,000</div>
+          </div>
+          <div class="goal-bar"><div class="goal-fill" style="width:25%;background:var(--amber)"></div></div>
+          <div class="goal-tag" style="background:rgba(245,158,11,0.1);color:var(--amber)">⚡ 25% done · Keep going!</div>
+        </div>
+        <div class="goal-card">
+          <div class="goal-emoji">💻</div>
+          <div class="goal-name">New MacBook</div>
+          <div class="goal-meta">Target: Sep 2026 · Monthly saving: ₹4,000</div>
+          <div class="goal-progress-row">
+            <div class="goal-saved">₹5,000</div>
+            <div class="goal-target">of ₹1,20,000</div>
+          </div>
+          <div class="goal-bar"><div class="goal-fill" style="width:4%;background:var(--muted)"></div></div>
+          <div class="goal-tag" style="background:rgba(107,114,128,0.1);color:var(--muted)">📅 Just started</div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">📋</div><div class="nav-label">Txns</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">📊</div><div class="nav-label">Budget</div><div class="nav-dot"></div></div>
+        <div class="nav-item active"><div class="nav-icon">🎯</div><div class="nav-label">Goals</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">✨</div><div class="nav-label">AI</div><div class="nav-dot"></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: AI CHAT -->
+    <div class="screen" id="screen-chat">
+      <div class="chat-screen">
+        <div class="chat-header">
+          <div class="ai-title-row">
+            <div class="ai-avatar">✨</div>
+            <div>
+              <div class="ai-name">Finio AI</div>
+              <div class="ai-status"><div class="status-dot"></div> Online · Analyzing your finances</div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-messages">
+          <div class="msg-ai">
+            <div class="ai-avatar" style="width:28px;height:28px;font-size:14px;border-radius:8px;flex-shrink:0">✨</div>
+            <div>
+              <div class="msg-ai-bubble">Hey Arpan! 👋 I've analyzed your spending for March. Your food expenses are 38% above your monthly average. Want to see where specifically?</div>
+            </div>
+          </div>
+          <div class="msg-user">
+            <div class="msg-user-bubble">Yes, show me where I overspent this month</div>
+          </div>
+          <div class="msg-ai">
+            <div class="ai-avatar" style="width:28px;height:28px;font-size:14px;border-radius:8px;flex-shrink:0">✨</div>
+            <div>
+              <div class="msg-ai-bubble">Here's your March spending breakdown:</div>
+              <div class="insight-card">
+                <div class="insight-row"><div class="label">🍔 Swiggy / Zomato</div><div class="val" style="color:var(--red)">₹3,420 ↑62%</div></div>
+                <div class="insight-row"><div class="label">☕ Cafes & Coffee</div><div class="val" style="color:var(--amber)">₹1,840 ↑28%</div></div>
+                <div class="insight-row"><div class="label">🏪 Groceries</div><div class="val" style="color:var(--green)">₹940 ✓ On track</div></div>
+                <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)">💡 Tip: Cooking 3x/week saves ~₹1,800/month</div>
+              </div>
+            </div>
+          </div>
+          <div class="msg-user">
+            <div class="msg-user-bubble">How much can I save by end of year?</div>
+          </div>
+          <div class="msg-ai">
+            <div class="ai-avatar" style="width:28px;height:28px;font-size:14px;border-radius:8px;flex-shrink:0">✨</div>
+            <div>
+              <div class="msg-ai-bubble">Based on your current income of ₹62,000 and average expenses of ₹31,400, you can save approximately <strong style="color:var(--green)">₹2,21,200</strong> by December 2026 — enough to fund your Goa trip AND grow your emergency fund 🎯</div>
+            </div>
+          </div>
+        </div>
+        <div class="prompts-row">
+          <div class="prompt-chip">📊 Monthly summary</div>
+          <div class="prompt-chip">🎯 Goal progress</div>
+          <div class="prompt-chip">⚠️ Overspending alerts</div>
+          <div class="prompt-chip">💡 Saving tips</div>
+        </div>
+        <div class="chat-input-row">
+          <div class="chat-input">Ask Finio anything...</div>
+          <div class="chat-send">↑</div>
+        </div>
+      </div>
+      <div class="bottom-nav" style="position:relative">
+        <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">📋</div><div class="nav-label">Txns</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">📊</div><div class="nav-label">Budget</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-label">Goals</div><div class="nav-dot"></div></div>
+        <div class="nav-item active"><div class="nav-icon">✨</div><div class="nav-label">AI</div><div class="nav-dot"></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 7: PROFILE -->
+    <div class="screen" id="screen-profile">
+      <div class="profile-screen">
+        <div class="profile-header">
+          <div class="profile-avatar">A</div>
+          <div class="profile-name">Arpan Narula</div>
+          <div class="profile-email">arpannarula9999@gmail.com</div>
+          <div class="profile-badges">
+            <div class="badge green">✓ Verified</div>
+            <div class="badge">🔥 18-day streak</div>
+            <div class="badge">⭐ Pro Member</div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-label">Accounts</div>
+          <div class="settings-item">
+            <div class="settings-item-left"><div class="settings-icon">🏦</div><div><div class="settings-text">Linked Bank Accounts</div><div class="settings-sub">HDFC, SBI · 2 accounts</div></div></div>
+            <div class="settings-arrow">›</div>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-left"><div class="settings-icon">💳</div><div><div class="settings-text">Cards & UPI</div><div class="settings-sub">3 cards linked</div></div></div>
+            <div class="settings-arrow">›</div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-label">Preferences</div>
+          <div class="settings-item">
+            <div class="settings-item-left"><div class="settings-icon">🌙</div><div><div class="settings-text">Dark Mode</div></div></div>
+            <div class="toggle"></div>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-left"><div class="settings-icon">🔔</div><div><div class="settings-text">Budget Alerts</div><div class="settings-sub">Notify at 80% usage</div></div></div>
+            <div class="toggle"></div>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-left"><div class="settings-icon">✨</div><div><div class="settings-text">AI Insights</div><div class="settings-sub">Weekly spending reports</div></div></div>
+            <div class="toggle off"></div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-label">Support</div>
+          <div class="settings-item">
+            <div class="settings-item-left"><div class="settings-icon">🔒</div><div><div class="settings-text">Privacy & Security</div></div></div>
+            <div class="settings-arrow">›</div>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-left"><div class="settings-icon">📤</div><div><div class="settings-text">Export Data (CSV)</div></div></div>
+            <div class="settings-arrow">›</div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">📋</div><div class="nav-label">Txns</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">📊</div><div class="nav-label">Budget</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-label">Goals</div><div class="nav-dot"></div></div>
+        <div class="nav-item"><div class="nav-icon">✨</div><div class="nav-label">AI</div><div class="nav-dot"></div></div>
+      </div>
+    </div>
+
+  </div><!-- end phone-frame -->
+</div><!-- end phone-wrap -->
+
+<script>
+function showScreen(id, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finio — Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080C14; --card: #111827; --card2: #1A2235;
+    --green: #22C55E; --amber: #F59E0B; --red: #EF4444; --blue: #3B82F6;
+    --text: #F0F4FF; --muted: #6B7280; --border: rgba(255,255,255,0.07);
+    --font-head: 'Syne', sans-serif; --font-body: 'DM Sans', sans-serif;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); font-family:var(--font-body); color:var(--text); padding:60px 40px; max-width:1100px; margin:0 auto; }
+  .ds-header { margin-bottom:60px; }
+  .ds-brand { font-size:13px; color:var(--green); letter-spacing:3px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+  .ds-title { font-family:var(--font-head); font-size:48px; font-weight:800; background:linear-gradient(135deg,#F0F4FF,#6B7280); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .ds-sub { color:var(--muted); margin-top:12px; font-size:15px; line-height:1.6; }
+  .section { margin-bottom:60px; }
+  .section-title { font-family:var(--font-head); font-size:22px; font-weight:700; margin-bottom:4px; }
+  .section-desc { color:var(--muted); font-size:13px; margin-bottom:24px; }
+  .divider { height:1px; background:var(--border); margin-bottom:24px; }
+
+  /* COLOR PALETTE */
+  .color-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:16px; }
+  .color-swatch { border-radius:16px; overflow:hidden; border:1px solid var(--border); }
+  .swatch-block { height:80px; }
+  .swatch-info { background:var(--card); padding:12px; }
+  .swatch-name { font-weight:600; font-size:13px; }
+  .swatch-hex { font-size:11px; color:var(--muted); margin-top:2px; font-family:monospace; }
+  .swatch-use { font-size:10px; color:var(--muted); margin-top:4px; }
+
+  /* TYPOGRAPHY */
+  .type-row { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px; margin-bottom:12px; display:flex; align-items:baseline; gap:24px; }
+  .type-meta { min-width:160px; font-size:11px; color:var(--muted); line-height:1.8; }
+  .type-meta strong { display:block; color:var(--text); font-size:12px; margin-bottom:4px; }
+
+  /* SPACING */
+  .spacing-row { display:flex; gap:12px; flex-wrap:wrap; }
+  .space-item { display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .space-block { background:rgba(34,197,94,0.2); border:1px solid rgba(34,197,94,0.3); border-radius:4px; }
+  .space-label { font-size:11px; color:var(--muted); text-align:center; }
+
+  /* COMPONENTS */
+  .comp-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .comp-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px; }
+  .comp-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+
+  /* Buttons */
+  .btn-primary { background:var(--green); color:#000; border:none; border-radius:12px; padding:14px 24px; font-family:var(--font-head); font-size:14px; font-weight:700; cursor:pointer; display:inline-block; margin:4px; }
+  .btn-secondary { background:transparent; color:var(--green); border:1px solid var(--green); border-radius:12px; padding:13px 24px; font-family:var(--font-body); font-size:14px; font-weight:500; cursor:pointer; display:inline-block; margin:4px; }
+  .btn-ghost { background:var(--card2); color:var(--text); border:1px solid var(--border); border-radius:12px; padding:13px 24px; font-family:var(--font-body); font-size:14px; cursor:pointer; display:inline-block; margin:4px; }
+  .btn-danger { background:rgba(239,68,68,0.1); color:var(--red); border:1px solid rgba(239,68,68,0.3); border-radius:12px; padding:13px 24px; font-family:var(--font-body); font-size:14px; cursor:pointer; display:inline-block; margin:4px; }
+  .btn-sm { padding:8px 16px; font-size:12px; border-radius:8px; }
+
+  /* Cards */
+  .sample-card { background:var(--card2); border:1px solid var(--border); border-radius:16px; padding:20px; }
+  .sample-card-green { background:linear-gradient(135deg,#112210,#0A1510); border:1px solid rgba(34,197,94,0.2); border-radius:16px; padding:20px; }
+
+  /* Inputs */
+  .input-field { background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:12px 16px; font-family:var(--font-body); font-size:14px; color:var(--text); width:100%; margin-bottom:10px; outline:none; }
+  .input-field:focus { border-color:var(--green); }
+  .input-label { font-size:12px; color:var(--muted); margin-bottom:6px; display:block; }
+
+  /* Badges */
+  .badge-row { display:flex; flex-wrap:wrap; gap:8px; }
+  .badge { border-radius:20px; padding:6px 12px; font-size:12px; font-weight:500; }
+  .badge-green { background:rgba(34,197,94,0.1); color:var(--green); border:1px solid rgba(34,197,94,0.2); }
+  .badge-amber { background:rgba(245,158,11,0.1); color:var(--amber); border:1px solid rgba(245,158,11,0.2); }
+  .badge-red { background:rgba(239,68,68,0.1); color:var(--red); border:1px solid rgba(239,68,68,0.2); }
+  .badge-muted { background:rgba(107,114,128,0.1); color:var(--muted); border:1px solid rgba(107,114,128,0.2); }
+
+  /* Progress */
+  .progress-bar { height:8px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden; margin-bottom:8px; }
+  .progress-fill { height:100%; border-radius:4px; }
+
+  /* Icon grid */
+  .icon-grid { display:flex; flex-wrap:wrap; gap:12px; }
+  .icon-item { background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:16px; display:flex; flex-direction:column; align-items:center; gap:8px; width:80px; }
+  .icon-emoji { font-size:24px; }
+  .icon-label { font-size:10px; color:var(--muted); text-align:center; }
+</style>
+</head>
+<body>
+<div class="ds-header">
+  <div class="ds-brand">Finio — UI/UX Case Study</div>
+  <div class="ds-title">Design System</div>
+  <div class="ds-sub">A complete visual language for Finio — the AI-powered personal finance app.<br>Built for consistency, accessibility, and scalability.</div>
+</div>
+
+<!-- COLOR PALETTE -->
+<div class="section">
+  <div class="section-title">Color Palette</div>
+  <div class="section-desc">Inspired by trust, growth, and intelligence. Dark base with vibrant accent colors.</div>
+  <div class="divider"></div>
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#080C14"></div>
+      <div class="swatch-info"><div class="swatch-name">Background</div><div class="swatch-hex">#080C14</div><div class="swatch-use">App background</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#111827"></div>
+      <div class="swatch-info"><div class="swatch-name">Card</div><div class="swatch-hex">#111827</div><div class="swatch-use">Card surfaces</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#1A2235"></div>
+      <div class="swatch-info"><div class="swatch-name">Card Elevated</div><div class="swatch-hex">#1A2235</div><div class="swatch-use">Nested cards</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#22C55E"></div>
+      <div class="swatch-info"><div class="swatch-name">Primary Green</div><div class="swatch-hex">#22C55E</div><div class="swatch-use">CTAs, positive, income</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#F59E0B"></div>
+      <div class="swatch-info"><div class="swatch-name">Amber Warning</div><div class="swatch-hex">#F59E0B</div><div class="swatch-use">Warnings, near limit</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#EF4444"></div>
+      <div class="swatch-info"><div class="swatch-name">Danger Red</div><div class="swatch-hex">#EF4444</div><div class="swatch-use">Expenses, over budget</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#F0F4FF"></div>
+      <div class="swatch-info"><div class="swatch-name">Text Primary</div><div class="swatch-hex">#F0F4FF</div><div class="swatch-use">Headings, body</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#6B7280"></div>
+      <div class="swatch-info"><div class="swatch-name">Text Muted</div><div class="swatch-hex">#6B7280</div><div class="swatch-use">Labels, secondary</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TYPOGRAPHY -->
+<div class="section">
+  <div class="section-title">Typography Scale</div>
+  <div class="section-desc">Syne for display & headings (bold, geometric). DM Sans for body (clean, readable).</div>
+  <div class="divider"></div>
+  <div class="type-row">
+    <div class="type-meta"><strong>Display / Brand</strong>Font: Syne 800<br>Size: 48px<br>Use: App name, hero</div>
+    <div style="font-family:'Syne';font-size:48px;font-weight:800;background:linear-gradient(135deg,#F0F4FF,#6B7280);-webkit-background-clip:text;-webkit-text-fill-color:transparent">finio</div>
+  </div>
+  <div class="type-row">
+    <div class="type-meta"><strong>Heading 1</strong>Font: Syne 800<br>Size: 28px<br>Use: Page titles</div>
+    <div style="font-family:'Syne';font-size:28px;font-weight:800">Budget Planner</div>
+  </div>
+  <div class="type-row">
+    <div class="type-meta"><strong>Heading 2</strong>Font: Syne 700<br>Size: 22px<br>Use: Section heads</div>
+    <div style="font-family:'Syne';font-size:22px;font-weight:700">Recent Transactions</div>
+  </div>
+  <div class="type-row">
+    <div class="type-meta"><strong>Balance / Amount</strong>Font: Syne 800<br>Size: 38px<br>Use: Money amounts</div>
+    <div style="font-family:'Syne';font-size:38px;font-weight:800;letter-spacing:-1px">₹84,320</div>
+  </div>
+  <div class="type-row">
+    <div class="type-meta"><strong>Body Regular</strong>Font: DM Sans 400<br>Size: 14px<br>Use: Descriptions</div>
+    <div style="font-size:14px;color:var(--muted);line-height:1.6;max-width:400px">AI-powered insights that actually explain your spending — not just track it. Get personalized tips to reach your goals faster.</div>
+  </div>
+  <div class="type-row">
+    <div class="type-meta"><strong>Label / Caption</strong>Font: DM Sans 500<br>Size: 11px<br>Use: Tags, labels</div>
+    <div style="font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Food & Dining · 6 transactions</div>
+  </div>
+</div>
+
+<!-- SPACING -->
+<div class="section">
+  <div class="section-title">Spacing System</div>
+  <div class="section-desc">Base unit: 4px. All spacing is a multiple of 4.</div>
+  <div class="divider"></div>
+  <div class="spacing-row">
+    <div class="space-item"><div class="space-block" style="width:4px;height:24px"></div><div class="space-label">4px<br>xs</div></div>
+    <div class="space-item"><div class="space-block" style="width:8px;height:24px"></div><div class="space-label">8px<br>sm</div></div>
+    <div class="space-item"><div class="space-block" style="width:12px;height:24px"></div><div class="space-label">12px<br>md</div></div>
+    <div class="space-item"><div class="space-block" style="width:16px;height:24px"></div><div class="space-label">16px<br>base</div></div>
+    <div class="space-item"><div class="space-block" style="width:24px;height:24px"></div><div class="space-label">24px<br>lg</div></div>
+    <div class="space-item"><div class="space-block" style="width:32px;height:24px"></div><div class="space-label">32px<br>xl</div></div>
+    <div class="space-item"><div class="space-block" style="width:48px;height:24px"></div><div class="space-label">48px<br>2xl</div></div>
+    <div class="space-item"><div class="space-block" style="width:64px;height:24px"></div><div class="space-label">64px<br>3xl</div></div>
+  </div>
+</div>
+
+<!-- COMPONENTS -->
+<div class="section">
+  <div class="section-title">Component Library</div>
+  <div class="section-desc">Reusable UI components used across all screens.</div>
+  <div class="divider"></div>
+  <div class="comp-grid">
+    <!-- Buttons -->
+    <div class="comp-card">
+      <div class="comp-label">Buttons</div>
+      <div class="btn-primary">Get Started</div>
+      <div class="btn-secondary">See Details</div><br>
+      <div class="btn-ghost">Cancel</div>
+      <div class="btn-danger">Delete Goal</div><br>
+      <div class="btn-primary btn-sm">Add</div>
+      <div class="btn-secondary btn-sm">Filter</div>
+    </div>
+    <!-- Badges -->
+    <div class="comp-card">
+      <div class="comp-label">Badges & Tags</div>
+      <div class="badge-row">
+        <div class="badge badge-green">✓ On Track</div>
+        <div class="badge badge-amber">⚠ Near Limit</div>
+        <div class="badge badge-red">✕ Over Budget</div>
+        <div class="badge badge-muted">📅 Pending</div>
+        <div class="badge badge-green">+12.4% this month</div>
+        <div class="badge badge-amber">⚡ 75% used</div>
+      </div>
+    </div>
+    <!-- Progress Bars -->
+    <div class="comp-card">
+      <div class="comp-label">Progress Bars</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Food · 60% · ₹6,000 of ₹10,000</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:60%;background:#22C55E"></div></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Transport · 77% · ₹3,100 of ₹4,000</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:77%;background:#F59E0B"></div></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Entertainment · 91% · ₹2,720 of ₹3,000</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:91%;background:#EF4444"></div></div>
+    </div>
+    <!-- Input Fields -->
+    <div class="comp-card">
+      <div class="comp-label">Input Fields</div>
+      <label class="input-label">Monthly Budget</label>
+      <input class="input-field" placeholder="₹ Enter amount" readonly>
+      <label class="input-label">Category</label>
+      <input class="input-field" placeholder="Select category" readonly>
+    </div>
+    <!-- Cards -->
+    <div class="comp-card">
+      <div class="comp-label">Card Variants</div>
+      <div class="sample-card" style="margin-bottom:12px">
+        <div style="font-size:12px;color:var(--muted)">Default Card</div>
+        <div style="font-family:'Syne';font-size:18px;font-weight:700;margin-top:4px">₹31,420</div>
+      </div>
+      <div class="sample-card-green">
+        <div style="font-size:12px;color:rgba(34,197,94,0.7)">Success Card</div>
+        <div style="font-family:'Syne';font-size:18px;font-weight:700;margin-top:4px;color:#22C55E">+₹8,000</div>
+      </div>
+    </div>
+    <!-- Icons -->
+    <div class="comp-card">
+      <div class="comp-label">Category Icons</div>
+      <div class="icon-grid">
+        <div class="icon-item"><div class="icon-emoji">🍔</div><div class="icon-label">Food</div></div>
+        <div class="icon-item"><div class="icon-emoji">🚕</div><div class="icon-label">Travel</div></div>
+        <div class="icon-item"><div class="icon-emoji">🛍️</div><div class="icon-label">Shopping</div></div>
+        <div class="icon-item"><div class="icon-emoji">🎬</div><div class="icon-label">Fun</div></div>
+        <div class="icon-item"><div class="icon-emoji">📱</div><div class="icon-label">Bills</div></div>
+        <div class="icon-item"><div class="icon-emoji">🎯</div><div class="icon-label">Goals</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BORDER RADIUS -->
+<div class="section">
+  <div class="section-title">Border Radius</div>
+  <div class="section-desc">Rounded, friendly corners. Higher radius = more prominent element.</div>
+  <div class="divider"></div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <div style="text-align:center"><div style="width:60px;height:60px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin:0 auto 8px"></div><div style="font-size:11px;color:var(--muted)">8px<br>Chips</div></div>
+    <div style="text-align:center"><div style="width:60px;height:60px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin:0 auto 8px"></div><div style="font-size:11px;color:var(--muted)">12px<br>Buttons</div></div>
+    <div style="text-align:center"><div style="width:60px;height:60px;background:var(--card);border:1px solid var(--border);border-radius:16px;margin:0 auto 8px"></div><div style="font-size:11px;color:var(--muted)">16px<br>Cards</div></div>
+    <div style="text-align:center"><div style="width:60px;height:60px;background:var(--card);border:1px solid var(--border);border-radius:20px;margin:0 auto 8px"></div><div style="font-size:11px;color:var(--muted)">20px<br>Containers</div></div>
+    <div style="text-align:center"><div style="width:60px;height:60px;background:var(--card);border:1px solid var(--border);border-radius:30px;margin:0 auto 8px"></div><div style="font-size:11px;color:var(--muted)">50px<br>Phone Frame</div></div>
+    <div style="text-align:center"><div style="width:60px;height:60px;background:var(--card);border:1px solid var(--border);border-radius:50%;margin:0 auto 8px"></div><div style="font-size:11px;color:var(--muted)">50%<br>Avatars</div></div>
+  </div>
+</div>
+</body>
+</html>

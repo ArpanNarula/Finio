@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finio — UI/UX Portfolio Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080C14;
+      --card: #111827;
+      --card2: #1A2235;
+      --green: #22C55E;
+      --green-hov: #16A34A;
+      --green-gl: rgba(34, 197, 94, 0.12);
+      --text: #F0F4FF;
+      --muted: #6B7280;
+      --border: rgba(255, 255, 255, 0.07);
+      --font-head: "Syne", sans-serif;
+      --font-body: "DM Sans", sans-serif;
+      --r-sm: 12px;
+      --r-md: 16px;
+      --r-lg: 20px;
+      --r-xl: 24px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      background-image:
+        radial-gradient(ellipse at 30% 0%, rgba(34, 197, 94, 0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, rgba(26, 34, 53, 0.6) 0%, transparent 60%);
+    }
+
+    .shell {
+      width: min(960px, 100%);
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: clamp(28px, 5vw, 48px);
+      backdrop-filter: blur(12px);
+      box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .header {
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-family: var(--font-head);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+
+    .header h1 {
+      font-family: var(--font-head);
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #F0F4FF 0%, rgba(240, 244, 255, 0.5) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 560px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      margin-bottom: 24px;
+      background: var(--card);
+    }
+
+    .hero-stat {
+      padding: 12px 14px;
+      border-right: 1px solid var(--border);
+    }
+
+    .hero-stat:last-child {
+      border-right: none;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-family: var(--font-head);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      background: linear-gradient(160deg, var(--card2) 0%, var(--card) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform 180ms var(--ease),
+        border-color 180ms var(--ease),
+        box-shadow 180ms var(--ease);
+      outline-offset: 3px;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -28px;
+      right: -28px;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 200ms var(--ease);
+    }
+
+    .card:hover,
+    .card:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(34, 197, 94, 0.28);
+      box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.28),
+        0 0 0 1px rgba(34, 197, 94, 0.08) inset;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card:focus-visible {
+      outline: 2px solid var(--green);
+    }
+
+    .card--featured {
+      background: linear-gradient(145deg, #112210 0%, #0A1510 100%);
+      border-color: rgba(34, 197, 94, 0.18);
+    }
+
+    .card--featured:hover,
+    .card--featured:focus-visible {
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-head);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+
+    .card-badge::before {
+      content: "";
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .card-title {
+      margin-bottom: 6px;
+      font-family: var(--font-head);
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .cta-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      background: var(--green);
+      color: #000;
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 22px;
+      border-radius: var(--r-sm);
+      letter-spacing: 0.01em;
+      transition: background 180ms var(--ease), transform 180ms var(--ease);
+      outline-offset: 3px;
+    }
+
+    .btn-primary:hover {
+      background: var(--green-hov);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--green);
+    }
+
+    .btn-primary svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .flow-hint {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .flow-hint span {
+      color: rgba(240, 244, 255, 0.45);
+      margin: 0 5px;
+    }
+
+    @media (max-width: 840px) {
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stat {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .hero-stat:last-child {
+        border-bottom: none;
+      }
+
+      .shell {
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-hint {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="header">
+      <div class="eyebrow">UI/UX Case Study · 2025</div>
+      <h1>Finio Portfolio Project</h1>
+      <p>Open any section below. Recommended flow: Case Study → Prototype → Design System → Wireframes → Research.</p>
+    </header>
+
+    <div class="hero-stats" aria-label="Quick project summary">
+      <div class="hero-stat">
+        <div class="stat-label">Screens</div>
+        <div class="stat-value">7 Core Flows</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-label">Research</div>
+        <div class="stat-value">24 Interviews</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-label">Output</div>
+        <div class="stat-value">5 Artifacts</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="grid">
+      <a class="card card--featured" href="/case-study/">
+        <div class="card-badge">Start Here</div>
+        <h2 class="card-title">Case Study</h2>
+        <p class="card-desc">Problem, design process, final solution, and learnings.</p>
+      </a>
+      <a class="card" href="/prototype/">
+        <div class="card-badge">Interactive</div>
+        <h2 class="card-title">Prototype</h2>
+        <p class="card-desc">Clickable phone mockup with seven product screens.</p>
+      </a>
+      <a class="card" href="/design-system/">
+        <div class="card-badge">Visual Rules</div>
+        <h2 class="card-title">Design System</h2>
+        <p class="card-desc">Colors, typography, spacing, and component library.</p>
+      </a>
+      <a class="card" href="/wireframes/">
+        <div class="card-badge">Structure</div>
+        <h2 class="card-title">Wireframes</h2>
+        <p class="card-desc">Lo-fi screen architecture, app sitemap, and user flow.</p>
+      </a>
+      <a class="card" href="/research/">
+        <div class="card-badge">Insights</div>
+        <h2 class="card-title">Research</h2>
+        <p class="card-desc">Personas, pain points, competitor analysis, journey map.</p>
+      </a>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn-primary" href="/case-study/">
+        Open Case Study
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </a>
+      <p class="flow-hint">
+        Case Study <span>&rarr;</span> Prototype <span>&rarr;</span> Design System <span>&rarr;</span> Wireframes <span>&rarr;</span> Research
+      </p>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finio — User Research</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#080C14;--card:#111827;--card2:#1A2235;
+    --green:#22C55E;--amber:#F59E0B;--red:#EF4444;--blue:#3B82F6;--purple:#8B5CF6;
+    --text:#F0F4FF;--muted:#6B7280;--border:rgba(255,255,255,0.07);
+    --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);font-family:var(--font-body);color:var(--text);padding:60px 40px;max-width:1100px;margin:0 auto;}
+  .page-header{margin-bottom:60px;}
+  .brand{font-size:12px;color:var(--green);letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+  h1{font-family:var(--font-head);font-size:46px;font-weight:800;background:linear-gradient(135deg,#F0F4FF,#6B7280);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;}
+  .subtitle{color:var(--muted);font-size:15px;margin-top:12px;line-height:1.6;}
+  .section{margin-bottom:60px;}
+  .section-title{font-family:var(--font-head);font-size:24px;font-weight:700;margin-bottom:4px;}
+  .section-desc{color:var(--muted);font-size:13px;margin-bottom:24px;}
+  hr{border:none;border-top:1px solid var(--border);margin-bottom:28px;}
+
+  /* RESEARCH STATS */
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px;}
+  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center;}
+  .stat-num{font-family:var(--font-head);font-size:32px;font-weight:800;color:var(--green);}
+  .stat-label{font-size:12px;color:var(--muted);margin-top:4px;}
+
+  /* PERSONAS */
+  .persona-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}
+  .persona-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;position:relative;overflow:hidden;}
+  .persona-avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:16px;}
+  .persona-name{font-family:var(--font-head);font-size:18px;font-weight:700;}
+  .persona-role{font-size:12px;color:var(--muted);margin-top:2px;margin-bottom:16px;}
+  .persona-tag{display:inline-block;background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:4px 10px;font-size:11px;font-weight:600;margin-bottom:16px;}
+  .persona-detail{font-size:12px;color:var(--muted);margin-bottom:4px;display:flex;gap:8px;}
+  .persona-detail span{color:var(--text);}
+  .persona-section-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin:16px 0 8px;}
+  .persona-list{list-style:none;}
+  .persona-list li{font-size:12px;color:var(--muted);padding:4px 0;display:flex;gap:8px;align-items:flex-start;}
+  .persona-list li::before{content:"•";color:var(--green);flex-shrink:0;}
+  .pain-list li::before{content:"•";color:var(--red);flex-shrink:0;}
+  .goal-list li::before{content:"✓";color:var(--green);flex-shrink:0;}
+
+  /* PAIN POINTS */
+  .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .pain-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;}
+  .pain-num{font-family:var(--font-head);font-size:32px;font-weight:800;color:rgba(239,68,68,0.3);margin-bottom:12px;}
+  .pain-title{font-size:15px;font-weight:600;margin-bottom:8px;}
+  .pain-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+  .pain-quote{background:var(--card2);border-left:3px solid var(--red);border-radius:0 8px 8px 0;padding:10px 14px;margin-top:12px;font-size:12px;color:var(--muted);font-style:italic;}
+
+  /* COMPETITOR TABLE */
+  .comp-table{width:100%;border-collapse:collapse;}
+  .comp-table th{background:var(--card2);font-family:var(--font-head);font-size:13px;font-weight:600;padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);}
+  .comp-table td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top;}
+  .comp-table tr:hover td{background:rgba(255,255,255,0.02);}
+  .check{color:var(--green);font-weight:700;}
+  .cross{color:var(--red);}
+  .partial{color:var(--amber);}
+  .app-name{font-weight:600;}
+  .finio-row td{background:rgba(34,197,94,0.04);border-top:1px solid rgba(34,197,94,0.2);border-bottom:1px solid rgba(34,197,94,0.2);}
+
+  /* JOURNEY MAP */
+  .journey-wrap{overflow-x:auto;}
+  .journey-map{display:flex;gap:0;min-width:800px;}
+  .journey-stage{flex:1;border-right:1px solid var(--border);}
+  .journey-stage:last-child{border-right:none;}
+  .journey-stage-head{background:var(--card2);padding:12px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+  .journey-content{padding:16px;}
+  .journey-action{font-size:12px;font-weight:600;margin-bottom:8px;color:var(--text);}
+  .journey-thought{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:12px;font-style:italic;}
+  .emotion-row{display:flex;gap:4px;}
+  .emotion{font-size:16px;}
+  .emotion-label{font-size:10px;color:var(--muted);}
+
+  /* INSIGHTS */
+  .insight-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+  .insight-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;}
+  .insight-icon{font-size:28px;margin-bottom:12px;}
+  .insight-title{font-size:14px;font-weight:600;margin-bottom:8px;}
+  .insight-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <div class="brand">Finio — UI/UX Case Study</div>
+  <h1>User Research</h1>
+  <div class="subtitle">Qualitative and quantitative research conducted to understand financial habits<br>of young Indian professionals (18–28), their pain points, and mental models.</div>
+</div>
+
+<!-- RESEARCH STATS -->
+<div class="section">
+  <div class="section-title">Research Overview</div>
+  <div class="section-desc">Methods: User interviews, surveys, diary studies, competitive analysis</div>
+  <hr>
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-num">24</div><div class="stat-label">User Interviews conducted</div></div>
+    <div class="stat-card"><div class="stat-num">156</div><div class="stat-label">Survey responses collected</div></div>
+    <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Competing apps analysed</div></div>
+    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Personas developed</div></div>
+  </div>
+</div>
+
+<!-- USER PERSONAS -->
+<div class="section">
+  <div class="section-title">User Personas</div>
+  <div class="section-desc">3 primary personas identified from research — each representing a distinct financial behaviour pattern.</div>
+  <hr>
+  <div class="persona-grid">
+    <!-- Persona 1 -->
+    <div class="persona-card">
+      <div style="position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(34,197,94,0.08) 0%,transparent 70%);pointer-events:none"></div>
+      <div class="persona-avatar" style="background:rgba(34,197,94,0.1)">👨‍💻</div>
+      <div class="persona-name">Rohan Mehta</div>
+      <div class="persona-role">Software Developer, 24 · Delhi</div>
+      <div class="persona-tag">Primary User</div>
+      <div class="persona-detail">📍 <span>Bangalore, WFH</span></div>
+      <div class="persona-detail">💰 <span>₹60,000/month salary</span></div>
+      <div class="persona-detail">📱 <span>Tech-savvy, early adopter</span></div>
+      <div class="persona-section-label">Goals</div>
+      <ul class="persona-list goal-list">
+        <li>Save for Goa trip with friends</li>
+        <li>Build an emergency fund</li>
+        <li>Track Swiggy/dining expenses</li>
+      </ul>
+      <div class="persona-section-label">Pain Points</div>
+      <ul class="persona-list pain-list">
+        <li>Forgets to log expenses manually</li>
+        <li>No idea where salary disappears</li>
+        <li>Tried 3 apps, quit within a week</li>
+      </ul>
+    </div>
+    <!-- Persona 2 -->
+    <div class="persona-card">
+      <div style="position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(245,158,11,0.08) 0%,transparent 70%);pointer-events:none"></div>
+      <div class="persona-avatar" style="background:rgba(245,158,11,0.1)">👩‍🎨</div>
+      <div class="persona-name">Priya Sharma</div>
+      <div class="persona-role">Graphic Designer, 22 · Mumbai</div>
+      <div class="persona-tag" style="background:rgba(245,158,11,0.1);color:var(--amber);border-color:rgba(245,158,11,0.2)">Secondary User</div>
+      <div class="persona-detail">📍 <span>Mumbai, Freelance</span></div>
+      <div class="persona-detail">💰 <span>₹25,000–45,000 variable</span></div>
+      <div class="persona-detail">📱 <span>Visual thinker, design-driven</span></div>
+      <div class="persona-section-label">Goals</div>
+      <ul class="persona-list goal-list">
+        <li>Handle irregular income better</li>
+        <li>Save for a new iPad / MacBook</li>
+        <li>Avoid overspending on weekends</li>
+      </ul>
+      <div class="persona-section-label">Pain Points</div>
+      <ul class="persona-list pain-list">
+        <li>Existing apps feel too corporate</li>
+        <li>Difficult to budget variable income</li>
+        <li>Wants visual, not just numbers</li>
+      </ul>
+    </div>
+    <!-- Persona 3 -->
+    <div class="persona-card">
+      <div style="position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(139,92,246,0.08) 0%,transparent 70%);pointer-events:none"></div>
+      <div class="persona-avatar" style="background:rgba(139,92,246,0.1)">👨‍🎓</div>
+      <div class="persona-name">Arjun Kapoor</div>
+      <div class="persona-role">MBA Student, 26 · Pune</div>
+      <div class="persona-tag" style="background:rgba(139,92,246,0.1);color:var(--purple);border-color:rgba(139,92,246,0.2)">Tertiary User</div>
+      <div class="persona-detail">📍 <span>Pune, Part-time income</span></div>
+      <div class="persona-detail">💰 <span>₹15,000 stipend + gigs</span></div>
+      <div class="persona-detail">📱 <span>Analytical, data-oriented</span></div>
+      <div class="persona-section-label">Goals</div>
+      <ul class="persona-list goal-list">
+        <li>Track every rupee on a budget</li>
+        <li>Understand spending patterns</li>
+        <li>Save for placement season costs</li>
+      </ul>
+      <div class="persona-section-label">Pain Points</div>
+      <ul class="persona-list pain-list">
+        <li>Spreadsheets are too manual</li>
+        <li>Wants actionable AI advice</li>
+        <li>Current apps lack insights depth</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PAIN POINTS -->
+<div class="section">
+  <div class="section-title">Key Pain Points Discovered</div>
+  <div class="section-desc">Patterns that emerged across all 24 interviews and survey responses.</div>
+  <hr>
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pain-num">01</div>
+      <div class="pain-title">Manual Logging Fatigue</div>
+      <div class="pain-desc">83% of users abandon expense tracking apps within 2 weeks because manually entering every transaction is tedious and easy to forget.</div>
+      <div class="pain-quote">"I kept the app for a week but forgot to log expenses after that. Too much effort." — Interview P7</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-num">02</div>
+      <div class="pain-title">No Meaningful Insights</div>
+      <div class="pain-desc">Existing apps show raw data but don't explain what it means or what action to take. Users feel overwhelmed by charts without context.</div>
+      <div class="pain-quote">"I can see I spent ₹8,000 on food. But now what? Nobody tells me what to do." — Interview P12</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-num">03</div>
+      <div class="pain-title">Rigid Budget Categories</div>
+      <div class="pain-desc">Pre-defined categories don't match the way young Indians think about money. Zomato and Swiggy are different mental categories than "dining out."</div>
+      <div class="pain-quote">"Swiggy is convenience, dining out is a treat — they're completely different to me." — Interview P3</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-num">04</div>
+      <div class="pain-title">Goal Setting Feels Abstract</div>
+      <div class="pain-desc">Users set savings goals but get no guidance on how much to save monthly or whether they're on track, making goals feel disconnected from daily spending.</div>
+      <div class="pain-quote">"I said I want to save ₹50,000 but the app just shows a progress bar. No plan." — Interview P19</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-num">05</div>
+      <div class="pain-title">Poor Visual Design</div>
+      <div class="pain-desc">Most FinTech apps prioritize function over aesthetics. Young users want an app they're proud to open — not something that looks like a banking portal.</div>
+      <div class="pain-quote">"The app works fine but I'm embarrassed to show my friends. It looks so old." — Interview P8</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-num">06</div>
+      <div class="pain-title">Variable Income Not Supported</div>
+      <div class="pain-desc">Freelancers and gig workers (28% of sample) have unpredictable income. Budgeting tools assume a fixed monthly salary, making them useless for variable earners.</div>
+      <div class="pain-quote">"Last month I earned ₹60k, this month ₹28k. How do I set a budget for that?" — Interview P21</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPETITOR ANALYSIS -->
+<div class="section">
+  <div class="section-title">Competitive Analysis</div>
+  <div class="section-desc">How Finio compares to the top 4 personal finance apps in India.</div>
+  <hr>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>App</th>
+        <th>AI Insights</th>
+        <th>Budget Planner</th>
+        <th>Goal Tracking</th>
+        <th>Modern UI</th>
+        <th>Variable Income</th>
+        <th>Free Tier</th>
+        <th>Key Gap</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="app-name">Walnut</div><div style="font-size:11px;color:var(--muted)">Expense tracker</div></td>
+        <td><span class="cross">✕</span></td>
+        <td><span class="partial">~</span></td>
+        <td><span class="cross">✕</span></td>
+        <td><span class="cross">✕</span></td>
+        <td><span class="cross">✕</span></td>
+        <td><span class="check">✓</span></td>
+        <td style="font-size:12px;color:var(--muted)">Outdated UI, no AI</td>
+      </tr>
+      <tr>
+        <td><div class="app-name">CRED</div><div style="font-size:11px;color:var(--muted)">Credit card focus</div></td>
+        <td><span class="partial">~</span></td>
+        <td><span class="cross">✕</span></td>
+        <td><span class="cross">✕</span></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="cross">✕</span></td>
+        <td><span class="check">✓</span></td>
+        <td style="font-size:12px;color:var(--muted)">Credit cards only</td>
+      </tr>
+      <tr>
+        <td><div class="app-name">Fi Money</div><div style="font-size:11px;color:var(--muted)">Neo-bank</div></td>
+        <td><span class="partial">~</span></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="cross">✕</span></td>
+        <td><span class="partial">~</span></td>
+        <td style="font-size:12px;color:var(--muted)">Requires bank switch</td>
+      </tr>
+      <tr>
+        <td><div class="app-name">Jupiter</div><div style="font-size:11px;color:var(--muted)">Neo-bank + rewards</div></td>
+        <td><span class="partial">~</span></td>
+        <td><span class="partial">~</span></td>
+        <td><span class="cross">✕</span></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="cross">✕</span></td>
+        <td><span class="partial">~</span></td>
+        <td style="font-size:12px;color:var(--muted)">Rewards-focused, not planning</td>
+      </tr>
+      <tr class="finio-row">
+        <td><div class="app-name" style="color:var(--green)">✨ Finio</div><div style="font-size:11px;color:var(--muted)">AI finance planner</div></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="check">✓</span></td>
+        <td style="font-size:12px;color:var(--green);font-weight:600">Full stack solution</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- USER JOURNEY MAP -->
+<div class="section">
+  <div class="section-title">User Journey Map</div>
+  <div class="section-desc">Persona: Rohan Mehta · Task: Tracking monthly spending and setting a savings goal</div>
+  <hr>
+  <div class="journey-wrap">
+    <div class="journey-map">
+      <div class="journey-stage">
+        <div class="journey-stage-head">1. Awareness</div>
+        <div class="journey-content">
+          <div class="journey-action">Discovers Finio via a friend's recommendation</div>
+          <div class="journey-thought">"My salary just credited but I have no idea where my money goes by month-end."</div>
+          <div class="emotion-row"><div class="emotion">😟</div><div class="emotion-label">Frustrated</div></div>
+        </div>
+      </div>
+      <div class="journey-stage">
+        <div class="journey-stage-head">2. Onboarding</div>
+        <div class="journey-content">
+          <div class="journey-action">Signs up, sets income and budget categories</div>
+          <div class="journey-thought">"This actually looks clean. Setting up took less than 2 minutes."</div>
+          <div class="emotion-row"><div class="emotion">😊</div><div class="emotion-label">Curious</div></div>
+        </div>
+      </div>
+      <div class="journey-stage">
+        <div class="journey-stage-head">3. First Use</div>
+        <div class="journey-content">
+          <div class="journey-action">Adds first few expenses, sees dashboard fill up</div>
+          <div class="journey-thought">"Oh wow, I've already spent 60% of my food budget in 2 weeks?"</div>
+          <div class="emotion-row"><div class="emotion">😲</div><div class="emotion-label">Surprised</div></div>
+        </div>
+      </div>
+      <div class="journey-stage">
+        <div class="journey-stage-head">4. AI Insight</div>
+        <div class="journey-content">
+          <div class="journey-action">Finio AI highlights Swiggy overspending pattern</div>
+          <div class="journey-thought">"Finally an app that tells me what to actually do about it."</div>
+          <div class="emotion-row"><div class="emotion">🤩</div><div class="emotion-label">Delighted</div></div>
+        </div>
+      </div>
+      <div class="journey-stage">
+        <div class="journey-stage-head">5. Goal Set</div>
+        <div class="journey-content">
+          <div class="journey-action">Creates Goa Trip goal, Finio calculates monthly target</div>
+          <div class="journey-thought">"It's telling me to save ₹3,000/month to reach my goal by June. That's doable."</div>
+          <div class="emotion-row"><div class="emotion">💪</div><div class="emotion-label">Motivated</div></div>
+        </div>
+      </div>
+      <div class="journey-stage">
+        <div class="journey-stage-head">6. Retention</div>
+        <div class="journey-content">
+          <div class="journey-action">Uses app daily, maintains 18-day streak</div>
+          <div class="journey-thought">"I actually look forward to checking this. First finance app I've kept for more than a month."</div>
+          <div class="emotion-row"><div class="emotion">😎</div><div class="emotion-label">Confident</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KEY DESIGN INSIGHTS -->
+<div class="section">
+  <div class="section-title">Key Design Insights</div>
+  <div class="section-desc">Research translated into actionable design decisions for Finio.</div>
+  <hr>
+  <div class="insight-grid">
+    <div class="insight-card">
+      <div class="insight-icon">🤖</div>
+      <div class="insight-title">AI must be actionable, not decorative</div>
+      <div class="insight-desc">Users don't just want to see data — they want to know what to do about it. Every AI insight includes a specific tip or recommendation.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon">🎨</div>
+      <div class="insight-title">Design is a core feature, not cosmetic</div>
+      <div class="insight-desc">Young users judge apps aesthetically first. A beautiful, dark interface signals that Finio understands its audience and earns daily usage.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon">🎯</div>
+      <div class="insight-title">Goals need a roadmap, not just a target</div>
+      <div class="insight-desc">Showing a goal amount alone is insufficient. Finio breaks down goals into monthly saving requirements and milestone celebrations.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon">⚡</div>
+      <div class="insight-title">Speed of logging = rate of engagement</div>
+      <div class="insight-desc">Every extra tap to log an expense loses a user. Finio's quick-add flow takes under 5 seconds with smart category prediction.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon">📊</div>
+      <div class="insight-title">Visual hierarchy guides emotion</div>
+      <div class="insight-desc">Color coding (green/amber/red) lets users understand their financial health at a glance without reading any numbers.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon">🔔</div>
+      <div class="insight-title">Timely nudges beat passive dashboards</div>
+      <div class="insight-desc">Proactive AI alerts when users are approaching budget limits outperform static dashboards users must remember to check.</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

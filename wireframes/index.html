@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finio — Wireframes</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#080C14;--card:#111827;--card2:#1A2235;
+    --green:#22C55E;--text:#F0F4FF;--muted:#6B7280;--border:rgba(255,255,255,0.07);
+    --wf-bg:#0F1219;--wf-card:#141B28;--wf-stroke:rgba(255,255,255,0.12);--wf-accent:rgba(34,197,94,0.6);
+    --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);font-family:var(--font-body);color:var(--text);padding:60px 40px;max-width:1200px;margin:0 auto;}
+  .page-header{margin-bottom:60px;}
+  .brand{font-size:12px;color:var(--green);letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+  h1{font-family:var(--font-head);font-size:46px;font-weight:800;background:linear-gradient(135deg,#F0F4FF,#6B7280);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .subtitle{color:var(--muted);font-size:15px;margin-top:12px;line-height:1.6;}
+  .section-label{font-size:11px;color:var(--green);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+  .section-title{font-family:var(--font-head);font-size:22px;font-weight:700;margin-bottom:4px;}
+  .section-desc{color:var(--muted);font-size:13px;margin-bottom:32px;}
+  hr{border:none;border-top:1px solid var(--border);margin-bottom:32px;}
+  .screens-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:60px;}
+  .wf-wrap{display:flex;flex-direction:column;gap:12px;}
+  .wf-label{font-size:12px;font-weight:600;color:var(--text);text-align:center;}
+  .wf-sublabel{font-size:10px;color:var(--muted);text-align:center;}
+
+  /* Wireframe phone */
+  .wf-phone{
+    background:var(--wf-bg);
+    border:1.5px solid var(--wf-stroke);
+    border-radius:28px;
+    padding:24px 14px 14px;
+    position:relative;
+    aspect-ratio:9/19;
+    overflow:hidden;
+  }
+  .wf-notch{
+    width:60px;height:12px;
+    background:var(--wf-stroke);
+    border-radius:6px;
+    margin:0 auto 18px;
+  }
+  /* WF elements */
+  .wf-block{background:var(--wf-stroke);border-radius:6px;}
+  .wf-block-green{background:rgba(34,197,94,0.25);border-radius:6px;}
+  .wf-line{height:6px;border-radius:3px;background:var(--wf-stroke);margin-bottom:6px;}
+  .wf-line-sm{height:4px;border-radius:2px;background:rgba(255,255,255,0.06);margin-bottom:4px;}
+  .wf-line-green{background:rgba(34,197,94,0.4);}
+  .wf-circle{border-radius:50%;background:var(--wf-stroke);}
+  .wf-rect{border-radius:8px;background:var(--wf-card);border:1px solid var(--wf-stroke);}
+  .wf-btn{height:24px;border-radius:6px;background:rgba(34,197,94,0.3);}
+  .wf-row{display:flex;gap:6px;align-items:center;margin-bottom:8px;}
+  .wf-col{display:flex;flex-direction:column;gap:4px;}
+  .wf-flex{display:flex;gap:6px;}
+  .wf-nav{
+    position:absolute;bottom:0;left:0;right:0;
+    height:40px;
+    background:rgba(8,12,20,0.9);
+    border-top:1px solid var(--wf-stroke);
+    display:flex;align-items:center;justify-content:space-around;
+    padding:0 8px;
+  }
+  .nav-dot-wf{width:20px;height:20px;border-radius:6px;background:var(--wf-stroke);}
+  .nav-dot-wf.active{background:rgba(34,197,94,0.4);}
+
+  /* Flow diagram */
+  .flow-wrap{overflow-x:auto;padding-bottom:20px;}
+  .flow{display:flex;align-items:center;gap:0;min-width:900px;}
+  .flow-node{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px 16px;
+    text-align:center;
+    min-width:120px;
+    flex-shrink:0;
+  }
+  .flow-node-active{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.3);}
+  .flow-node-title{font-size:12px;font-weight:600;margin-bottom:4px;}
+  .flow-node-sub{font-size:10px;color:var(--muted);}
+  .flow-arrow{color:var(--muted);font-size:18px;padding:0 8px;flex-shrink:0;}
+  .flow-decision{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px 16px;
+    text-align:center;
+    min-width:120px;
+    flex-shrink:0;
+    position:relative;
+  }
+  .flow-decision-inner{
+    background:rgba(245,158,11,0.08);
+    border:1px solid rgba(245,158,11,0.3);
+    border-radius:8px;
+    padding:10px 12px;
+  }
+  .flow-decision-title{font-size:11px;font-weight:600;color:var(--amber);}
+
+  /* Sitemap */
+  .sitemap{display:flex;flex-direction:column;align-items:center;gap:0;}
+  .sitemap-root{
+    background:rgba(34,197,94,0.1);
+    border:1px solid rgba(34,197,94,0.3);
+    border-radius:12px;
+    padding:12px 24px;
+    font-weight:700;
+    font-size:14px;
+    color:var(--green);
+    margin-bottom:0;
+  }
+  .sitemap-connector{width:2px;height:32px;background:var(--border);margin:0 auto;}
+  .sitemap-level{display:flex;gap:16px;justify-content:center;}
+  .sitemap-branch{display:flex;flex-direction:column;align-items:center;}
+  .sitemap-node{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 16px;
+    font-size:12px;
+    font-weight:600;
+    white-space:nowrap;
+    min-width:100px;
+    text-align:center;
+  }
+  .sitemap-children{display:flex;gap:10px;justify-content:center;margin-top:0;}
+  .sitemap-child{
+    background:var(--card2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:10px;
+    color:var(--muted);
+    white-space:nowrap;
+    margin-top:0;
+    text-align:center;
+  }
+  .sitemap-h-line{height:2px;background:var(--border);width:100%;}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="brand">Finio — UI/UX Case Study</div>
+  <h1>Wireframes</h1>
+  <div class="subtitle">Low-fidelity wireframes showing structure, layout, and information hierarchy<br>before adding visual design. Created in Figma after user flow mapping.</div>
+</div>
+
+<!-- SITEMAP -->
+<div style="margin-bottom:60px">
+  <div class="section-label">01 — Information Architecture</div>
+  <div class="section-title">App Sitemap</div>
+  <div class="section-desc">Overall structure of Finio. Every screen and its relationship to navigation.</div>
+  <hr>
+  <div class="sitemap">
+    <div class="sitemap-root">✦ Finio App</div>
+    <div class="sitemap-connector"></div>
+    <div style="display:flex;gap:24px;align-items:flex-start">
+      <!-- Onboarding branch -->
+      <div class="sitemap-branch">
+        <div class="sitemap-node" style="border-color:rgba(34,197,94,0.3)">Onboarding</div>
+        <div class="sitemap-connector"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="sitemap-child">Splash / Welcome</div>
+          <div class="sitemap-child">Set Income</div>
+          <div class="sitemap-child">Budget Setup</div>
+          <div class="sitemap-child">Goal Prompt</div>
+        </div>
+      </div>
+      <!-- Home branch -->
+      <div class="sitemap-branch">
+        <div class="sitemap-node">🏠 Dashboard</div>
+        <div class="sitemap-connector"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="sitemap-child">Balance Card</div>
+          <div class="sitemap-child">AI Insight Strip</div>
+          <div class="sitemap-child">Quick Actions</div>
+          <div class="sitemap-child">Budget Rings</div>
+          <div class="sitemap-child">Recent Transactions</div>
+        </div>
+      </div>
+      <!-- Transactions branch -->
+      <div class="sitemap-branch">
+        <div class="sitemap-node">📋 Transactions</div>
+        <div class="sitemap-connector"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="sitemap-child">All Transactions</div>
+          <div class="sitemap-child">Category Filter</div>
+          <div class="sitemap-child">Search</div>
+          <div class="sitemap-child">Add Expense</div>
+        </div>
+      </div>
+      <!-- Budget branch -->
+      <div class="sitemap-branch">
+        <div class="sitemap-node">📊 Budget</div>
+        <div class="sitemap-connector"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="sitemap-child">Overview</div>
+          <div class="sitemap-child">By Category</div>
+          <div class="sitemap-child">50/30/20 Rule</div>
+          <div class="sitemap-child">Edit Limits</div>
+        </div>
+      </div>
+      <!-- Goals branch -->
+      <div class="sitemap-branch">
+        <div class="sitemap-node">🎯 Goals</div>
+        <div class="sitemap-connector"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="sitemap-child">Goal List</div>
+          <div class="sitemap-child">Goal Detail</div>
+          <div class="sitemap-child">Add Goal</div>
+          <div class="sitemap-child">Milestones</div>
+        </div>
+      </div>
+      <!-- AI branch -->
+      <div class="sitemap-branch">
+        <div class="sitemap-node">✨ AI Chat</div>
+        <div class="sitemap-connector"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="sitemap-child">Chat Interface</div>
+          <div class="sitemap-child">Prompt Chips</div>
+          <div class="sitemap-child">Insights Cards</div>
+        </div>
+      </div>
+      <!-- Profile branch -->
+      <div class="sitemap-branch">
+        <div class="sitemap-node">👤 Profile</div>
+        <div class="sitemap-connector"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="sitemap-child">Account Info</div>
+          <div class="sitemap-child">Linked Accounts</div>
+          <div class="sitemap-child">Preferences</div>
+          <div class="sitemap-child">Export Data</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- USER FLOW -->
+<div style="margin-bottom:60px">
+  <div class="section-label">02 — User Flow</div>
+  <div class="section-title">Primary User Flow</div>
+  <div class="section-desc">Task: New user discovering they're over-budget and setting a corrective goal.</div>
+  <hr>
+  <div class="flow-wrap">
+    <div class="flow">
+      <div class="flow-node flow-node-active"><div class="flow-node-title" style="color:var(--green)">App Open</div><div class="flow-node-sub">First launch</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="flow-node-title">Onboarding</div><div class="flow-node-sub">Set income & budget</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="flow-node-title">Dashboard</div><div class="flow-node-sub">View balance & AI insight</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-decision"><div class="flow-decision-inner"><div class="flow-decision-title">⚠ Over budget?</div></div></div>
+      <div class="flow-arrow">Yes →</div>
+      <div class="flow-node"><div class="flow-node-title">View Budget</div><div class="flow-node-sub">See which category</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="flow-node-title">AI Advice</div><div class="flow-node-sub">Get specific tip</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="flow-node-title">Set Goal</div><div class="flow-node-sub">Create savings goal</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node flow-node-active"><div class="flow-node-title" style="color:var(--green)">✓ Retained</div><div class="flow-node-sub">Motivated to track</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- WIREFRAME SCREENS -->
+<div>
+  <div class="section-label">03 — Lo-Fi Wireframes</div>
+  <div class="section-title">All 7 Screens — Lo-Fidelity</div>
+  <div class="section-desc">Grey-box wireframes showing layout structure before visual design was applied.</div>
+  <hr>
+  <div class="screens-grid">
+    <!-- Screen 1: Onboarding -->
+    <div class="wf-wrap">
+      <div class="wf-phone">
+        <div class="wf-notch"></div>
+        <div class="wf-line wf-line-green" style="width:50%;margin-bottom:4px"></div>
+        <div class="wf-line-sm" style="width:70%;margin-bottom:20px"></div>
+        <div class="wf-rect" style="height:140px;margin-bottom:12px;padding:12px">
+          <div class="wf-block" style="height:20px;width:40%;margin-bottom:8px"></div>
+          <div class="wf-line" style="width:60%"></div>
+          <div class="wf-flex" style="margin-top:8px;gap:4px">
+            <div class="wf-block" style="flex:1;height:40px;border-radius:6px"></div>
+            <div class="wf-block" style="flex:1;height:40px;border-radius:6px"></div>
+            <div class="wf-block" style="flex:1;height:40px;border-radius:6px"></div>
+          </div>
+        </div>
+        <div class="wf-line" style="width:80%;margin-bottom:4px"></div>
+        <div class="wf-line-sm" style="width:90%;margin-bottom:4px"></div>
+        <div class="wf-line-sm" style="width:70%;margin-bottom:16px"></div>
+        <div class="wf-flex" style="gap:4px;margin-bottom:20px">
+          <div class="wf-block-green" style="width:20px;height:6px;border-radius:3px"></div>
+          <div class="wf-block" style="width:8px;height:6px;border-radius:3px"></div>
+          <div class="wf-block" style="width:8px;height:6px;border-radius:3px"></div>
+        </div>
+        <div class="wf-btn"></div>
+        <div class="wf-block" style="height:22px;border-radius:6px;margin-top:6px;opacity:0.4"></div>
+      </div>
+      <div class="wf-label">① Onboarding</div>
+      <div class="wf-sublabel">Welcome + preview card + CTA</div>
+    </div>
+
+    <!-- Screen 2: Dashboard -->
+    <div class="wf-wrap">
+      <div class="wf-phone">
+        <div class="wf-notch"></div>
+        <div class="wf-row">
+          <div class="wf-col" style="flex:1"><div class="wf-line-sm" style="width:60%"></div><div class="wf-line" style="width:80%"></div></div>
+          <div class="wf-circle" style="width:28px;height:28px;flex-shrink:0"></div>
+        </div>
+        <div class="wf-rect" style="height:90px;margin-bottom:8px;padding:10px;background:rgba(34,197,94,0.05);border-color:rgba(34,197,94,0.2)">
+          <div class="wf-line-sm" style="width:40%"></div>
+          <div class="wf-line wf-line-green" style="width:70%;height:10px;margin:6px 0"></div>
+          <div class="wf-flex" style="gap:6px">
+            <div class="wf-block" style="flex:1;height:24px;border-radius:6px"></div>
+            <div class="wf-block" style="flex:1;height:24px;border-radius:6px"></div>
+            <div class="wf-block" style="flex:1;height:24px;border-radius:6px"></div>
+          </div>
+        </div>
+        <div class="wf-rect" style="height:30px;margin-bottom:8px;padding:8px;background:rgba(245,158,11,0.04)">
+          <div class="wf-flex"><div class="wf-block" style="width:16px;height:16px;border-radius:4px"></div><div class="wf-line-sm" style="flex:1;margin:0;align-self:center"></div></div>
+        </div>
+        <div class="wf-line-sm" style="width:40%;margin-bottom:6px"></div>
+        <div class="wf-flex" style="gap:6px;margin-bottom:8px">
+          <div class="wf-block" style="width:40px;height:50px;border-radius:8px"></div>
+          <div class="wf-block" style="width:40px;height:50px;border-radius:8px"></div>
+          <div class="wf-block" style="width:40px;height:50px;border-radius:8px"></div>
+          <div class="wf-block" style="width:40px;height:50px;border-radius:8px"></div>
+        </div>
+        <div class="wf-rect" style="height:60px;margin-bottom:8px;padding:8px">
+          <div class="wf-flex" style="justify-content:space-around">
+            <div class="wf-circle" style="width:40px;height:40px;border:2px solid rgba(34,197,94,0.3)"></div>
+            <div class="wf-circle" style="width:40px;height:40px;border:2px solid rgba(245,158,11,0.3)"></div>
+            <div class="wf-circle" style="width:40px;height:40px;border:2px solid rgba(239,68,68,0.3)"></div>
+          </div>
+        </div>
+        <div class="wf-block" style="height:32px;border-radius:6px;margin-bottom:4px"></div>
+        <div class="wf-block" style="height:32px;border-radius:6px;margin-bottom:4px"></div>
+        <div class="wf-nav">
+          <div class="nav-dot-wf active"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+        </div>
+      </div>
+      <div class="wf-label">② Dashboard</div>
+      <div class="wf-sublabel">Balance + AI strip + budget rings</div>
+    </div>
+
+    <!-- Screen 3: Transactions -->
+    <div class="wf-wrap">
+      <div class="wf-phone">
+        <div class="wf-notch"></div>
+        <div class="wf-line" style="width:50%;margin-bottom:4px"></div>
+        <div class="wf-rect" style="height:22px;margin-bottom:8px;padding:6px"><div class="wf-flex"><div class="wf-block" style="width:12px;height:12px;border-radius:3px"></div><div class="wf-line-sm" style="flex:1;margin:0;align-self:center"></div></div></div>
+        <div class="wf-flex" style="gap:4px;margin-bottom:10px">
+          <div class="wf-block-green" style="height:18px;flex:1;border-radius:10px"></div>
+          <div class="wf-block" style="height:18px;flex:1;border-radius:10px"></div>
+          <div class="wf-block" style="height:18px;flex:1;border-radius:10px"></div>
+          <div class="wf-block" style="height:18px;flex:1;border-radius:10px"></div>
+        </div>
+        <div class="wf-line-sm" style="width:30%;margin-bottom:6px"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="wf-row" style="margin:0;padding:6px 0;border-bottom:1px solid var(--wf-stroke)">
+            <div class="wf-block" style="width:26px;height:26px;border-radius:8px;flex-shrink:0"></div>
+            <div class="wf-col" style="flex:1"><div class="wf-line" style="width:70%;margin-bottom:3px"></div><div class="wf-line-sm" style="width:50%;margin:0"></div></div>
+            <div class="wf-col" style="align-items:flex-end"><div class="wf-line" style="width:40px;margin-bottom:3px"></div><div class="wf-line-sm" style="width:30px;margin:0"></div></div>
+          </div>
+          <div class="wf-row" style="margin:0;padding:6px 0;border-bottom:1px solid var(--wf-stroke)">
+            <div class="wf-block" style="width:26px;height:26px;border-radius:8px;flex-shrink:0;background:rgba(34,197,94,0.2)"></div>
+            <div class="wf-col" style="flex:1"><div class="wf-line" style="width:70%;margin-bottom:3px"></div><div class="wf-line-sm" style="width:50%;margin:0"></div></div>
+            <div class="wf-col" style="align-items:flex-end"><div class="wf-line wf-line-green" style="width:40px;margin-bottom:3px"></div><div class="wf-line-sm" style="width:30px;margin:0"></div></div>
+          </div>
+          <div class="wf-row" style="margin:0;padding:6px 0;border-bottom:1px solid var(--wf-stroke)">
+            <div class="wf-block" style="width:26px;height:26px;border-radius:8px;flex-shrink:0"></div>
+            <div class="wf-col" style="flex:1"><div class="wf-line" style="width:70%;margin-bottom:3px"></div><div class="wf-line-sm" style="width:50%;margin:0"></div></div>
+            <div class="wf-col" style="align-items:flex-end"><div class="wf-line" style="width:40px;margin-bottom:3px"></div><div class="wf-line-sm" style="width:30px;margin:0"></div></div>
+          </div>
+          <div class="wf-row" style="margin:0;padding:6px 0">
+            <div class="wf-block" style="width:26px;height:26px;border-radius:8px;flex-shrink:0"></div>
+            <div class="wf-col" style="flex:1"><div class="wf-line" style="width:70%;margin-bottom:3px"></div><div class="wf-line-sm" style="width:50%;margin:0"></div></div>
+            <div class="wf-col" style="align-items:flex-end"><div class="wf-line" style="width:40px;margin-bottom:3px"></div><div class="wf-line-sm" style="width:30px;margin:0"></div></div>
+          </div>
+        </div>
+        <div class="wf-nav">
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf active"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+        </div>
+      </div>
+      <div class="wf-label">③ Transactions</div>
+      <div class="wf-sublabel">Search + filter chips + list</div>
+    </div>
+
+    <!-- Screen 4: Budget -->
+    <div class="wf-wrap">
+      <div class="wf-phone">
+        <div class="wf-notch"></div>
+        <div class="wf-line" style="width:50%;margin-bottom:4px"></div>
+        <div class="wf-row" style="margin-bottom:8px">
+          <div class="wf-block" style="width:16px;height:16px;border-radius:4px"></div>
+          <div class="wf-line" style="flex:1;margin:0 8px"></div>
+          <div class="wf-block" style="width:16px;height:16px;border-radius:4px"></div>
+        </div>
+        <div class="wf-rect" style="height:70px;margin-bottom:8px;padding:10px">
+          <div class="wf-line" style="width:40%;margin-bottom:4px"></div>
+          <div class="wf-row"><div class="wf-line" style="width:50%;height:10px;margin:0"></div><div class="wf-line-sm" style="width:30%;margin:0;margin-left:auto"></div></div>
+          <div style="height:6px;background:rgba(34,197,94,0.3);border-radius:3px;width:62%;margin-top:8px"></div>
+        </div>
+        <div class="wf-flex" style="gap:4px;margin-bottom:10px">
+          <div class="wf-block-green" style="flex:1;height:18px;border-radius:8px"></div>
+          <div class="wf-block" style="flex:1;height:18px;border-radius:8px"></div>
+          <div class="wf-block" style="flex:1;height:18px;border-radius:8px"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="wf-rect" style="padding:8px">
+            <div class="wf-row" style="margin-bottom:6px"><div class="wf-block" style="width:20px;height:20px;border-radius:6px;flex-shrink:0"></div><div class="wf-col" style="flex:1"><div class="wf-line" style="width:60%;margin-bottom:3px"></div><div class="wf-line-sm" style="width:40%;margin:0"></div></div><div class="wf-col" style="align-items:flex-end"><div class="wf-line" style="width:35px;margin-bottom:3px"></div><div class="wf-line-sm" style="width:25px;margin:0"></div></div></div>
+            <div style="height:4px;background:rgba(34,197,94,0.3);border-radius:2px;width:60%"></div>
+          </div>
+          <div class="wf-rect" style="padding:8px">
+            <div class="wf-row" style="margin-bottom:6px"><div class="wf-block" style="width:20px;height:20px;border-radius:6px;flex-shrink:0"></div><div class="wf-col" style="flex:1"><div class="wf-line" style="width:60%;margin-bottom:3px"></div><div class="wf-line-sm" style="width:40%;margin:0"></div></div><div class="wf-col" style="align-items:flex-end"><div class="wf-line" style="width:35px;margin-bottom:3px"></div><div class="wf-line-sm" style="width:25px;margin:0"></div></div></div>
+            <div style="height:4px;background:rgba(245,158,11,0.4);border-radius:2px;width:77%"></div>
+          </div>
+          <div class="wf-rect" style="padding:8px;border-color:rgba(239,68,68,0.2)">
+            <div class="wf-row" style="margin-bottom:6px"><div class="wf-block" style="width:20px;height:20px;border-radius:6px;flex-shrink:0"></div><div class="wf-col" style="flex:1"><div class="wf-line" style="width:60%;margin-bottom:3px"></div><div class="wf-line-sm" style="width:40%;margin:0"></div></div><div class="wf-col" style="align-items:flex-end"><div class="wf-line" style="width:35px;margin-bottom:3px"></div><div class="wf-line-sm" style="width:25px;margin:0"></div></div></div>
+            <div style="height:4px;background:rgba(239,68,68,0.4);border-radius:2px;width:91%"></div>
+          </div>
+        </div>
+        <div class="wf-nav">
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf active"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+        </div>
+      </div>
+      <div class="wf-label">④ Budget Planner</div>
+      <div class="wf-sublabel">Overview + category bars</div>
+    </div>
+
+    <!-- Screen 5: Goals -->
+    <div class="wf-wrap">
+      <div class="wf-phone">
+        <div class="wf-notch"></div>
+        <div class="wf-line" style="width:40%;margin-bottom:4px"></div>
+        <div class="wf-line-sm" style="width:60%;margin-bottom:12px"></div>
+        <div style="border:1px dashed rgba(34,197,94,0.3);border-radius:10px;padding:10px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;height:32px">
+          <div class="wf-line-green" style="width:60%;height:5px;border-radius:3px"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="wf-rect" style="padding:12px;background:rgba(34,197,94,0.04);border-color:rgba(34,197,94,0.2)">
+            <div class="wf-block" style="width:28px;height:28px;border-radius:8px;margin-bottom:8px"></div>
+            <div class="wf-line" style="width:50%;margin-bottom:4px"></div>
+            <div class="wf-line-sm" style="width:70%;margin-bottom:10px"></div>
+            <div class="wf-row" style="margin-bottom:6px"><div class="wf-line" style="flex:1;margin:0;height:10px"></div><div class="wf-line-sm" style="width:30%;margin:0;margin-left:8px"></div></div>
+            <div style="height:5px;background:rgba(34,197,94,0.4);border-radius:3px;width:62%;margin-bottom:6px"></div>
+            <div class="wf-block-green" style="height:16px;width:60%;border-radius:8px"></div>
+          </div>
+          <div class="wf-rect" style="padding:12px">
+            <div class="wf-block" style="width:28px;height:28px;border-radius:8px;margin-bottom:8px"></div>
+            <div class="wf-line" style="width:50%;margin-bottom:4px"></div>
+            <div class="wf-line-sm" style="width:70%;margin-bottom:10px"></div>
+            <div style="height:5px;background:rgba(245,158,11,0.4);border-radius:3px;width:25%;margin-bottom:6px"></div>
+            <div class="wf-block" style="height:16px;width:60%;border-radius:8px;background:rgba(245,158,11,0.2)"></div>
+          </div>
+        </div>
+        <div class="wf-nav">
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf active"></div>
+          <div class="nav-dot-wf"></div>
+        </div>
+      </div>
+      <div class="wf-label">⑤ Goals</div>
+      <div class="wf-sublabel">Goal cards + progress + milestones</div>
+    </div>
+
+    <!-- Screen 6: AI Chat -->
+    <div class="wf-wrap">
+      <div class="wf-phone">
+        <div class="wf-notch"></div>
+        <div class="wf-row" style="margin-bottom:16px">
+          <div class="wf-block" style="width:28px;height:28px;border-radius:8px;flex-shrink:0;background:rgba(34,197,94,0.15)"></div>
+          <div class="wf-col" style="flex:1"><div class="wf-line" style="width:60%;margin-bottom:3px"></div><div class="wf-line-sm wf-line-green" style="width:40%;margin:0"></div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;flex:1;margin-bottom:10px">
+          <div class="wf-row" style="margin:0;align-items:flex-start;max-width:75%">
+            <div class="wf-circle" style="width:18px;height:18px;background:rgba(34,197,94,0.2);flex-shrink:0"></div>
+            <div class="wf-rect" style="padding:8px;border-radius:4px 10px 10px 10px;flex:1">
+              <div class="wf-line-sm" style="width:90%;margin-bottom:3px"></div>
+              <div class="wf-line-sm" style="width:70%;margin-bottom:3px"></div>
+              <div class="wf-line-sm" style="width:80%;margin:0"></div>
+            </div>
+          </div>
+          <div style="margin-left:auto;max-width:60%">
+            <div style="background:rgba(34,197,94,0.2);border-radius:10px 10px 4px 10px;padding:8px">
+              <div class="wf-line-sm" style="width:100%;margin-bottom:3px"></div>
+              <div class="wf-line-sm" style="width:70%;margin:0"></div>
+            </div>
+          </div>
+          <div class="wf-row" style="margin:0;align-items:flex-start;max-width:80%">
+            <div class="wf-circle" style="width:18px;height:18px;background:rgba(34,197,94,0.2);flex-shrink:0"></div>
+            <div style="flex:1">
+              <div class="wf-rect" style="padding:8px;border-radius:4px 10px 10px 10px;margin-bottom:6px">
+                <div class="wf-line-sm" style="width:90%;margin-bottom:3px"></div>
+                <div class="wf-line-sm" style="width:60%;margin:0"></div>
+              </div>
+              <div class="wf-rect" style="padding:8px">
+                <div class="wf-line-sm" style="width:80%;margin-bottom:3px"></div>
+                <div class="wf-line-sm" style="width:60%;margin-bottom:3px"></div>
+                <div class="wf-line-sm" style="width:70%;margin:0"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-flex" style="gap:4px;margin-bottom:8px;overflow:hidden">
+          <div class="wf-block" style="height:18px;flex:1;border-radius:10px;flex-shrink:0;min-width:70px"></div>
+          <div class="wf-block" style="height:18px;flex:1;border-radius:10px;flex-shrink:0;min-width:60px"></div>
+          <div class="wf-block" style="height:18px;flex:1;border-radius:10px;flex-shrink:0;min-width:80px"></div>
+        </div>
+        <div class="wf-flex" style="gap:6px">
+          <div class="wf-rect" style="flex:1;height:28px"></div>
+          <div class="wf-block-green" style="width:28px;height:28px;border-radius:8px;flex-shrink:0"></div>
+        </div>
+        <div class="wf-nav">
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf active"></div>
+        </div>
+      </div>
+      <div class="wf-label">⑥ AI Assistant</div>
+      <div class="wf-sublabel">Chat UI + prompts + insights</div>
+    </div>
+
+    <!-- Screen 7: Profile -->
+    <div class="wf-wrap">
+      <div class="wf-phone">
+        <div class="wf-notch"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:16px">
+          <div class="wf-circle" style="width:52px;height:52px;background:rgba(34,197,94,0.2);margin-bottom:8px"></div>
+          <div class="wf-line" style="width:50%;margin-bottom:4px"></div>
+          <div class="wf-line-sm" style="width:65%;margin-bottom:8px"></div>
+          <div class="wf-flex" style="gap:4px">
+            <div class="wf-block-green" style="height:16px;width:50px;border-radius:10px"></div>
+            <div class="wf-block" style="height:16px;width:60px;border-radius:10px"></div>
+            <div class="wf-block" style="height:16px;width:55px;border-radius:10px"></div>
+          </div>
+        </div>
+        <div class="wf-line-sm" style="width:30%;margin-bottom:6px"></div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px">
+          <div class="wf-rect" style="padding:8px"><div class="wf-row" style="margin:0"><div class="wf-block" style="width:18px;height:18px;border-radius:5px;flex-shrink:0"></div><div class="wf-line" style="flex:1;margin:0 8px"></div><div class="wf-block" style="width:10px;height:10px;border-radius:2px"></div></div></div>
+          <div class="wf-rect" style="padding:8px"><div class="wf-row" style="margin:0"><div class="wf-block" style="width:18px;height:18px;border-radius:5px;flex-shrink:0"></div><div class="wf-line" style="flex:1;margin:0 8px"></div><div class="wf-block" style="width:10px;height:10px;border-radius:2px"></div></div></div>
+        </div>
+        <div class="wf-line-sm" style="width:30%;margin-bottom:6px"></div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div class="wf-rect" style="padding:8px"><div class="wf-row" style="margin:0"><div class="wf-block" style="width:18px;height:18px;border-radius:5px;flex-shrink:0"></div><div class="wf-line" style="flex:1;margin:0 8px"></div><div class="wf-block-green" style="width:24px;height:14px;border-radius:7px"></div></div></div>
+          <div class="wf-rect" style="padding:8px"><div class="wf-row" style="margin:0"><div class="wf-block" style="width:18px;height:18px;border-radius:5px;flex-shrink:0"></div><div class="wf-line" style="flex:1;margin:0 8px"></div><div class="wf-block-green" style="width:24px;height:14px;border-radius:7px"></div></div></div>
+          <div class="wf-rect" style="padding:8px"><div class="wf-row" style="margin:0"><div class="wf-block" style="width:18px;height:18px;border-radius:5px;flex-shrink:0"></div><div class="wf-line" style="flex:1;margin:0 8px"></div><div class="wf-block" style="width:24px;height:14px;border-radius:7px"></div></div></div>
+        </div>
+        <div class="wf-nav">
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+          <div class="nav-dot-wf"></div>
+        </div>
+      </div>
+      <div class="wf-label">⑦ Profile</div>
+      <div class="wf-sublabel">Avatar + settings + toggles</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
